@@ -1,0 +1,44 @@
+/* pages/main/info.wxss */
+
+.set-name-wrap {
+  display: flex;
+  flex-direction: 'row';
+  height: 100rpx;
+  align-items: center;
+  padding: 10rpx 30rpx;
+}
+
+.set-name-wrap-hover {
+  opacity: 0.8;
+}
+
+.set-name-avatar-name {
+  flex-grow: 1;
+}
+
+.set-name-avatar-name {
+  margin-left: 40rpx;
+}
+
+.set-name-avatar-image {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50rpx;
+}
+
+.set-name-avatar-nav {
+  font-size: 1.2em;
+  color: #ddd;
+}
+
+.sign-wrap{
+  position: fixed;
+  width: 80rpx;
+  height: 80rpx;
+  right: 20rpx;
+  bottom: 20rpx;
+}
+.sign{
+  width: 60rpx;
+  height: 60rpx;
+}

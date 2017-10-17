@@ -1,0 +1,20 @@
+<scroll-view scroll-y>
+  <navigator url="/pages/setName/setName" class="set-name-wrap" hover-class="set-name-wrap-hover">
+    <view class="set-name-avatar">
+      <image class="set-name-avatar-image" src="{{userAvatar}}" mode='aspectFit' />
+    </view>
+    <view class="set-name-avatar-name">
+      <view class="weui-media-box__title">{{userName}}</view>
+    </view>
+    <view class="set-name-avatar-nav">></view>
+  </navigator>
+  <view wx:for="{{babys}}" wx:for-index="idx" wx:for-item="baby">
+    <navigator url="/pages/setBaby/setBaby?id={{baby.id}}">
+      {{idx}}: {{baby.name}}
+    </navigator>
+  </view>
+  <button bindtap='goWeui'>go weui</button>
+</scroll-view>
+<view class="sign-wrap">
+  <image bindtap="doSign" wx:if="{{showSign}}" class="sign" src="/pages/images/sign.png" mode='aspectFit' />
+</view>

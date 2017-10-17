@@ -1,0 +1,2 @@
+<!--pages/setBaby/setBaby.wxml-->
+<text>{{baby.name}}</text>

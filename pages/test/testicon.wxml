@@ -1,0 +1,47 @@
+<view class="group">
+  <block wx:for="{{iconSize}}">
+    <icon type="success" size="{{item}}"/>
+  </block>
+</view>
+
+<view class="group">
+  <block wx:for="{{iconType}}">
+    <icon type="{{item}}" size="40"/>
+  </block>
+</view>
+
+
+<view class="group">
+  <block wx:for="{{iconColor}}">
+    <icon type="success" size="40" color="{{item}}"/>
+  </block>
+</view>
+
+<view class="section">
+  <view class="section__title">flex-direction: row</view>
+  <view class="flex-wrp" style="display: flex;flex-direction: row;">
+    <view class="flex-item bc_green">1</view>
+    <view class="flex-item bc_red">2</view>
+    <view class="flex-item bc_blue">3</view>
+  </view>
+</view>
+<view class="section">
+  <view class="section__title">flex-direction: column</view>
+  <view class="flex-wrp" style="height: 300px;flex-direction:column;">
+    <view class="flex-item bc_green">1</view>
+    <view class="flex-item bc_red">2</view>
+    <view class="flex-item bc_blue">3</view>
+  </view>
+</view>
+<view >
+    <view class="flex-row" style="display: flex;flex-direction: row;">
+        <view class="flex-view-item">1</view>
+        <view class="flex-view-item">2</view>
+        <view class="flex-view-item">3</view>
+    </view>
+    <view class="flex-column" style="display:flex;flex-direction: column;" >
+        <view class="flex-view-item">c1</view>
+        <view class="flex-view-item">c2</view>
+        <view class="flex-view-item">c3</view>
+    </view>
+</view>

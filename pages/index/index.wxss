@@ -1,0 +1,68 @@
+/**index.wxss**/
+#login{
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  height: 100%
+}
+.logo-wrap{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.phone-input-wrap, .password-input-wrap {
+  display: flex;
+  flex-direction: 'row';
+  margin: 0 30rpx;
+  border-bottom: 1px solid #ddd;
+  justify-content: center;
+  align-items: center;
+}
+
+.phone-input-icon, .password-input-icon {
+  width: 40rpx;
+  height: 40rpx;
+  margin: 8rpx 20rpx 8rpx 0;
+}
+
+.phone-input, .password-input {
+  flex-grow: 1;
+  height: 100rpx;
+}
+
+.login-btn {
+  display: inline-block;
+  width: 560rpx;
+  height: 100rpx;
+  background: #04a1e8;
+  border-radius: 50rpx;
+  line-height: 100rpx;
+  color: #fff;
+  font-size: 1.0em;
+  margin-top: 120rpx;
+}
+
+
+.login-btn:hover {
+  opacity: 0.8
+}
+
+.password-get-code-btn{
+  background: transparent;
+  border:1px solid #45a5f0;
+  height: 72rpx;
+  border-radius: 36rpx;
+  line-height: 72rpx;
+  color: #45a5f0;
+  font-size: 0.7em;
+}
+.password-get-code-btn-disable{
+  border: 1px solid #aaa;
+}
+.password-get-code-btn:hover{
+  opacity: 0.8;
+}
+
+.password-input-wrap{
+  margin-top: 30rpx;
+}

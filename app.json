@@ -1,0 +1,65 @@
+{
+  "pages": [
+    "pages/splash/splash",
+    "pages/index/index",
+    "pages/logs/logs",
+    "test/test/test",
+    "pages/test/test",
+    "example/index",
+    "example/button/button",
+    "example/list/list",
+    "example/input/input",
+    "example/slider/slider",
+    "example/uploader/uploader",
+    "example/article/article",
+    "example/badge/badge",
+    "example/flex/flex",
+    "example/footer/footer",
+    "example/gallery/gallery",
+    "example/grid/grid",
+    "example/icons/icons",
+    "example/loadmore/loadmore",
+    "example/panel/panel",
+    "example/preview/preview",
+    "example/progress/progress",
+    "example/actionsheet/actionsheet",
+    "example/dialog/dialog",
+    "example/msg/msg",
+    "example/msg/msg_success",
+    "example/msg/msg_fail",
+    "example/picker/picker",
+    "example/toast/toast",
+    "example/navbar/navbar",
+    "example/tabbar/tabbar",
+    "example/searchbar/searchbar",
+    "pages/main/info",
+    "pages/main/photos",
+    "pages/setName/setName",
+    "pages/setBaby/setBaby"
+  ],
+  "tabBar": {
+    "color": "#666666",
+    "selectedColor": "#45a5f0",
+    "position": "bottom",
+    "list": [
+      {
+        "pagePath": "pages/main/info",
+        "text": "个人信息",
+        "iconPath": "pages/images/icon-profile.png",
+        "selectedIconPath": "pages/images/icon-profile-press.png"
+      },
+      {
+        "pagePath": "pages/main/photos",
+        "text": "宝宝照片",
+        "iconPath": "pages/images/icon-photo.png",
+        "selectedIconPath": "pages/images/icon-photo-press.png"
+      }
+    ]
+  },
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle": "black"
+  }
+}

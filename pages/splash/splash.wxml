@@ -1,0 +1,4 @@
+<!--pages/splash/splash.wxml-->
+<view>
+  <image src="/pages/images/splash.png" class="splash" mode='widthFix'></image>
+</view>
