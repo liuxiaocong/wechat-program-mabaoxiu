@@ -69,8 +69,53 @@ App({
   globalData: {
     userInfo: null,
     codeToServer: null,
-    babys: [{ id: 1, name: "baby1", age: 3, avatar: "/pages/images/baby-default.jpg" },
-    { id: 2, name: "baby2", age: 5, avatar: "/pages/images/baby-default.jpg" }],
+    babys: [{
+      id: 1,
+      name: "baby1",
+      age: 3,
+      canAddTemplate: true,
+      avatar: "/pages/images/baby-default.jpg", relation: "母子",
+      templates: [
+        {
+          url: "/pages/images/baby-template-default.jpg"
+        },
+        {
+          url: "/pages/images/baby-template-default.jpg"
+        }, {
+          url: "/pages/images/baby-template-default.jpg"
+        },
+        {
+          url: "/pages/images/baby-template-default.jpg"
+        },
+        {
+          url: "/pages/images/baby-template-default.jpg"
+        }
+      ]
+    },
+    {
+      id: 2,
+      name: "baby2",
+      age: 5,
+      canAddTemplate: false,
+      avatar: "/pages/images/baby-default.jpg",
+      relation: "父子",
+      templates: [
+        {
+          url: "/pages/images/baby-template-default.jpg"
+        },
+        {
+          url: "/pages/images/baby-template-default.jpg"
+        }, {
+          url: "/pages/images/baby-template-default.jpg"
+        },
+        {
+          url: "/pages/images/baby-template-default.jpg"
+        },
+        {
+          url: "/pages/images/baby-template-default.jpg"
+        }
+      ]
+    }],
     isDebug: false
   }
 })

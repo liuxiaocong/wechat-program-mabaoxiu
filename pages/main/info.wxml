@@ -9,9 +9,40 @@
     <view class="set-name-avatar-nav">></view>
   </navigator>
   <view wx:for="{{babys}}" wx:for-index="idx" wx:for-item="baby">
-    <navigator url="/pages/setBaby/setBaby?id={{baby.id}}">
-      {{idx}}: {{baby.name}}
+    <navigator url="/pages/setBaby/setBaby?id={{baby.id}}" class="baby-base-info-wrap" hover-class="baby-base-info-wrap-hover">
+      <view class="baby-name-relation-wrap">
+        <view class="baby-name-wrap">
+          <text>{{baby.name}}</text>
+        </view>
+        <view class="baby-relation-wrap">
+          <text>{{baby.relation}}</text>
+        </view>
+      </view>
+      <view class="baby-info-nav">></view>
     </navigator>
+    <view class="baby-photo-info-wrap">
+      <view class="baby-avatar-wrap">
+        <image class="baby-avatar" src="{{baby.avatar}}" mode='aspectFill' />
+        <button class="baby-avatar-edit-btn">编辑</button>
+      </view>
+      <view class="baby-photo-info-inner-wrap">
+        <view>照片总数:15</view>
+        <view>评论总数:15</view>
+        <view>点赞总数:15</view>
+      </view>
+    </view>
+    <view class="baby-temp-wrap">
+      <view class="baby-temp-current-wrap">
+        {{baby.canAddTemplate?"添加":""}}宝贝模版{{baby.canAddTemplate?"+":""}}
+      </view>
+      <scroll-view scroll-x class="">
+        <view class="baby-temp-list-wrap">
+          <view class="baby-templates-item-wrap" wx:for="{{baby.templates}}" wx:for-index="idx" wx:for-item="template">
+            <image class="baby-templates-item" src="{{template.url}}" mode='aspectFill' />
+          </view>
+        </view>
+      </scroll-view>
+    </view>
   </view>
   <button bindtap='goWeui'>go weui</button>
 </scroll-view>
