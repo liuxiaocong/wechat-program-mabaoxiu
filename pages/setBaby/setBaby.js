@@ -1,4 +1,6 @@
 // pages/setBaby/setBaby.js
+const api = require('../../utils/api.js');
+const util = require('../../utils/util.js');
 const app = getApp()
 Page({
 
@@ -7,7 +9,10 @@ Page({
    */
   data: {
     id: null,
-    baby: null
+    currentName: null,
+    currentRelation:null,
+    relations: ["母子", "父子", "母女","父女","其他"],
+    relationIndex: 0,
   },
 
   /**
@@ -16,8 +21,8 @@ Page({
   onLoad: function (options) {
     let id = parseInt(options.id);
     let baby = app.getBabyById(id);
-    console.log(baby);
-    this.setData({ id: id, baby: baby })
+    util.log(baby);
+    this.setData({ id: id, currentName: baby.name, currentRelation: baby.relation })
   },
 
   /**
@@ -67,5 +72,36 @@ Page({
    */
   onShareAppMessage: function () {
 
-  }
+  },
+
+  onNameChange: function (e) {
+    if (e.detail.value) {
+      if (e.detail.value == this.data.currentName) {
+        this.setData({
+          submitBtnDisable: true
+        })
+      } else {
+        this.setData({
+          submitBtnDisable: false
+        })
+      }
+    } else {
+      this.setData({
+        submitBtnDisable: true
+      })
+    }
+  },
+
+  formSubmit: function (e) {
+    console.log(e.detail.value);
+    let values = e.detail.value;
+    let name = values.name;
+  },
+
+  bindRelationChange: function (e) {
+    util.log('picker relation' + e.detail.value);
+    this.setData({
+      relationIndex: e.detail.value
+    })
+  },
 })

@@ -2,15 +2,18 @@
   <view class="logo-wrap">
     <image src="/pages/images/login-banner.png" style="width: 400rpx;height:400rpx" mode='aspectFit'></image>
   </view>
-
-  <view class="phone-input-wrap">
-    <image class="phone-input-icon" src="/pages/images/login-phone.png" mode='aspectFit'></image>
-    <input class="phone-input" placeholder="输入手机号码" />
-  </view>
-  <view class="password-input-wrap">
-    <image class="password-input-icon" src="/pages/images/login-code.png" mode='aspectFit'></image>
-    <input password class="password-input" placeholder="输入验证码" />
-    <button class="{{codeBtnDisable?'password-get-code-btn password-get-code-btn-disable':'password-get-code-btn'}}" disabled="{{codeBtnDisable}}" bindtap='getCode'>获取验证码</button>
-  </view>
-  <button class="login-btn" bindtap='doLogin'>手机号绑定微信</button>
+  <form bindsubmit="formSubmit" bindreset="formReset">
+    <view class="phone-input-wrap">
+      <image class="phone-input-icon" src="/pages/images/login-phone.png" mode='aspectFit'></image>
+      <input bindinput='onPhoneChange' class="phone-input" name="phone" placeholder="输入手机号码" />
+    </view>
+    <view class="password-input-wrap">
+      <image class="password-input-icon" src="/pages/images/login-code.png" mode='aspectFit'></image>
+      <input class="password-input" bindinput='onCodeChange' name="code" placeholder="输入验证码" />
+      <button class="{{codeBtnDisable?'password-get-code-btn password-get-code-btn-disable':'password-get-code-btn'}}" disabled="{{codeBtnDisable}}" bindtap='getCode'>获取验证码</button>
+    </view>
+    <view class="login-btn-wrap">
+      <button class="login-btn" disabled="{{bindBtnDisable}}" formType="submit">手机号绑定微信</button>
+    </view>
+  </form>
 </view>

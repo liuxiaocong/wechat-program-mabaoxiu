@@ -1,4 +1,6 @@
 // pages/main/info.js
+const api = require('../../utils/api.js');
+const util = require('../../utils/util.js');
 const app = getApp()
 Page({
 
@@ -73,6 +75,19 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+
+  clickEditName: function() {
+    wx.navigateTo({
+      url: '/pages/setName/setName'
+    })
+  },
+
+  clickEditBaby: function(e){
+    util.log(e.target.dataset.id);
+    wx.navigateTo({
+      url: '/pages/setBaby/setBaby?id=' + e.target.dataset.id,
+    })
   },
 
   goWeui: function () {

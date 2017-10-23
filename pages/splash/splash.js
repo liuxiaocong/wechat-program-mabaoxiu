@@ -1,4 +1,6 @@
 // pages/splash/splash.js
+const api = require('../../utils/api.js');
+const util = require('../../utils/util.js');
 const app = getApp()
 Page({
 
@@ -83,18 +85,48 @@ Page({
   },
  
   sumbitCodeToServer: function(code){
-    let time = 1000;
-    if (app.globalData.isDebug)
-    {
-      time = 0;
-    }
-    setTimeout(function () {
-      wx.switchTab({
-        url: '/pages/main/info'
-      })
-      // wx.redirectTo({
-      //   url: '/pages/index/index'
-      // })
-    }, time);
+    let url = api
+    wx.request({
+      url: api.wxLogin, 
+      data: {
+        "appId": api.appid,
+        "jsCode": code
+      },
+      method: 'POST',
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      success: function (res) {
+        util.log("wxLogin success");
+        util.log(res);
+        // wx.redirectTo({
+        //   url: '/pages/index/index'
+        // })
+        wx.switchTab({
+          url: '/pages/main/info'
+        })
+      },
+      fail: function(err) {
+        util.log("wxLogin fail");
+        util.log(err)
+        wx.switchTab({
+          url: '/pages/main/info'
+        })
+      },
+    })
+
+    // let time = 1000;
+    // if (app.globalData.isDebug)
+    // {
+    //   time = 0;
+    // }
+    // setTimeout(function () {
+    //   wx.switchTab({
+    //     url: '/pages/main/info'
+    //   })
+    //   // wx.redirectTo({
+    //   //   url: '/pages/index/index'
+    //   // })
+    // }, time);
   }
 })

@@ -69,6 +69,8 @@ App({
   globalData: {
     userInfo: null,
     codeToServer: null,
+    token: null,
+    openId: null,
     babys: [{
       id: 1,
       name: "baby1",

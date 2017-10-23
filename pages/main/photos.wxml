@@ -1,2 +1,21 @@
 <!--pages/main/photos.wxml-->
-<text>pages/main/photos.wxml</text>
+<view wx:if="{{showNav}}" class='baby-nav-wrap'>
+  <view wx:for="{{babys}}" wx:for-index="idx" wx:for-item="baby" wx:key="*this">
+    <view class="baby-wrap" bindtap='onTapBaby' data-babyId='{{baby.id}}'  hover-class="baby-wrap-hover">
+      <image class="{{baby.id === focusBabyId?'baby-avatar baby-avatar-active':'baby-avatar'}}" src="{{baby.avatar}}" mode='aspectFill' />
+    </view>
+  </view>
+</view>
+<scroll-view scroll-y>
+  <view class='image-item-list-wrap'>
+    <view class="image-item-wrap" hover-class="image-item-wrap-hover" wx:for="{{currentImageItems}}" wx:for-index="idx" wx:for-item="imageItem" wx:key="*this">
+      <view class='image-item-wrap-inner'>
+        <image data-item='{{imageItem}}' bindtap='onClickImageItem' class="image-item-image" src="{{imageItem.url}}" style='height:{{imageHeight}}' mode='aspectFill' />
+      </view>
+    </view>
+  </view>
+</scroll-view>
+
+<view wx:if="{{showPhotoPreview}}" bindtap='onTapPreivewLayout' class='image-view-wrap'>
+  <image class="loading-background image-view-avatar" src="{{currentPhotoPreviewItem.url}}" mode='aspectFill' />
+</view>

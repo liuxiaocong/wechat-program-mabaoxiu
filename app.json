@@ -35,7 +35,8 @@
     "pages/main/info",
     "pages/main/photos",
     "pages/setName/setName",
-    "pages/setBaby/setBaby"
+    "pages/setBaby/setBaby",
+    "pages/main/photoSquare"
   ],
   "tabBar": {
     "color": "#666666",
@@ -53,12 +54,18 @@
         "text": "宝宝照片",
         "iconPath": "pages/images/icon-photo.png",
         "selectedIconPath": "pages/images/icon-photo-press.png"
+      },
+      {
+        "pagePath": "pages/main/photoSquare",
+        "text": "照片广场",
+        "iconPath": "pages/images/icon-photo.png",
+        "selectedIconPath": "pages/images/icon-photo-press.png"
       }
     ]
   },
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#fff",
+    "navigationBarBackgroundColor": "#f0eff5",
     "navigationBarTitleText": "妈宝秀",
     "navigationBarTextStyle": "black"
   }

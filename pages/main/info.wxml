@@ -1,47 +1,49 @@
 <scroll-view scroll-y>
-  <navigator url="/pages/setName/setName" class="set-name-wrap" hover-class="set-name-wrap-hover">
+  <view class="set-name-wrap" hover-class="set-name-wrap-hover">
     <view class="set-name-avatar">
       <image class="set-name-avatar-image" src="{{userAvatar}}" mode='aspectFit' />
     </view>
     <view class="set-name-avatar-name">
       <view class="weui-media-box__title">{{userName}}</view>
     </view>
-    <view class="set-name-avatar-nav">></view>
-  </navigator>
-  <view wx:for="{{babys}}" wx:for-index="idx" wx:for-item="baby">
-    <navigator url="/pages/setBaby/setBaby?id={{baby.id}}" class="baby-base-info-wrap" hover-class="baby-base-info-wrap-hover">
+    <button bindtap="clickEditName" class="weui-btn mini-btn set-name-btn" type="default" size="mini">修改昵称</button>
+  </view>
+  <view wx:for="{{babys}}" wx:for-index="idx" wx:for-item="baby" wx:key="*this">
+    <view class="baby-base-info-wrap" hover-class="baby-base-info-wrap-hover">
+      <image class="baby-avatar" src="{{baby.avatar}}" mode='aspectFill' />
       <view class="baby-name-relation-wrap">
-        <view class="baby-name-wrap">
-          <text>{{baby.name}}</text>
-        </view>
-        <view class="baby-relation-wrap">
-          <text>{{baby.relation}}</text>
-        </view>
+        <text>宝贝名字: {{baby.name}}</text>
+        <text>关系: {{baby.relation}}</text>
       </view>
-      <view class="baby-info-nav">></view>
-    </navigator>
-    <view class="baby-photo-info-wrap">
-      <view class="baby-avatar-wrap">
-        <image class="baby-avatar" src="{{baby.avatar}}" mode='aspectFill' />
-        <button class="baby-avatar-edit-btn">编辑</button>
-      </view>
-      <view class="baby-photo-info-inner-wrap">
-        <view>照片总数:15</view>
-        <view>评论总数:15</view>
-        <view>点赞总数:15</view>
+      <view class="baby-action-wrap">
+        <button bindtap="clickEditBaby" data-id="{{baby.id}}" class="edit-baby-btn" hover-class="edit-baby-btn-hover">编辑</button>
+
+        <button bindtap="clickAddTemplate" data-id="{{baby.id}}" class="add-template-btn" hover-class="add-template-btn-hover" wx:if="{{baby.canAddTemplate}}">添加模版</button>
       </view>
     </view>
-    <view class="baby-temp-wrap">
-      <view class="baby-temp-current-wrap">
-        {{baby.canAddTemplate?"添加":""}}宝贝模版{{baby.canAddTemplate?"+":""}}
-      </view>
-      <scroll-view scroll-x class="">
-        <view class="baby-temp-list-wrap">
-          <view class="baby-templates-item-wrap" wx:for="{{baby.templates}}" wx:for-index="idx" wx:for-item="template">
-            <image class="baby-templates-item" src="{{template.url}}" mode='aspectFill' />
-          </view>
+    <scroll-view scroll-x class="">
+      <view class="baby-temp-list-wrap">
+        <view class="baby-templates-item-wrap" wx:for="{{baby.templates}}" wx:for-index="idx" wx:for-item="template" wx:key="*this">
+          <image class="baby-templates-item" src="{{template.url}}" mode='aspectFill' />
         </view>
-      </scroll-view>
+      </view>
+    </scroll-view>
+
+    <view class="baby-social-info-wrap">
+      <view class="baby-social-photo-wrap">
+        <image class="baby-social-photo-icon" src="/pages/images/photo-icon.png" mode='aspectFit' />
+        <text class="baby-social-photo-count">200</text>
+      </view>
+
+      <view class="baby-social-comment-wrap">
+        <image class="baby-social-comment-icon" src="/pages/images/comment-icon.png" mode='aspectFit' />
+        <text class="baby-social-comment-count">200</text>
+      </view>
+
+      <view class="baby-social-like-wrap">
+        <image class="baby-social-like-icon" src="/pages/images/like-icon.png" mode='aspectFit' />
+        <text class="baby-social-like-count">200</text>
+      </view>
     </view>
   </view>
   <button bindtap='goWeui'>go weui</button>

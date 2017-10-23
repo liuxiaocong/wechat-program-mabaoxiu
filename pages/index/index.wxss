@@ -5,7 +5,7 @@
   flex-direction: column;
   height: 100%
 }
-.logo-wrap{
+.logo-wrap,.login-btn-wrap{
   display: flex;
   justify-content: center;
   align-items: center;
@@ -41,7 +41,9 @@
   font-size: 1.0em;
   margin-top: 120rpx;
 }
-
+.login-btn[disabled]{
+  border:1px solid #ddd;
+}
 
 .login-btn:hover {
   opacity: 0.8

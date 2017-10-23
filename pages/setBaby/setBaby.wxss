@@ -1,1 +1,53 @@
 /* pages/setBaby/setBaby.wxss */
+page {
+  background: #f0eff5
+}
+.name-input-wrap{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 100rpx 0
+}
+.name-input{
+  display: inline-block;
+  height: 100rpx;
+  width: 100%;
+  background: transparent;
+  background: #fff;
+  padding: 0 30rpx;
+}
+.confirm-btn-wrap{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.confirm-btn {
+  display: inline-block;
+  width: 560rpx;
+  height: 100rpx;
+  background: #04a1e8;
+  border-radius: 50rpx;
+  line-height: 100rpx;
+  color: #fff;
+  font-size: 1.0em;
+  margin-top: 60rpx;
+}
+
+.confirm-btn[disabled]{
+  border:1px solid #ddd;
+}
+
+.confirm-btn:hover {
+  opacity: 0.8
+}
+
+.realtion-select-wrap{
+  display: flex;
+  flex-direction: row;
+  background: #fff;
+  padding: 10rpx 30rpx;
+}
+
+.realtion-select-picker{
+  flex-grow: 1
+}

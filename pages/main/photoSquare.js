@@ -1,7 +1,6 @@
-// pages/main/photos.js
+// pages/main/photoSquare.js
 const api = require('../../utils/api.js');
 const util = require('../../utils/util.js');
-const app = getApp();
 Page({
 
   /**
@@ -11,29 +10,13 @@ Page({
     showPhotoPreview: false,
     currentPhotoPreviewItem: {},
     currentImageItems: [],
-    imageHeight: '90px',
-    babys: [],
-    showNav: false,
-    focusBabyId: 1,
-  },
-
-  onTapBaby: function (e) {
-    let babyId = e.currentTarget.dataset.babyid;
-    util.log(babyId);
-    this.setData({ focusBabyId: babyId });
+    imageHeight: '90px'
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    if (app.globalData.userInfo) {
-      let showNav = app.globalData.babys && app.globalData.babys.length > 1;
-      this.setData({
-        babys: app.globalData.babys,
-        showNav: showNav,
-      })
-    }
     wx.getSystemInfo({
       success: (res) => {
         util.log(res);

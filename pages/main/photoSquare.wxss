@@ -1,0 +1,37 @@
+/* pages/main/photoSquare.wxss */
+.image-view-wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-item-list-wrap {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.image-item-wrap {
+  width: 33%;
+}
+.image-item-list-wrap{
+  padding-left: 3px;
+}
+.image-item-wrap-inner {
+  margin: 6px 3px 0 3px;
+}
+
+.image-item-image {
+  width: 100%;
+  display: block
+}
+
+.image-view-avatar{
+  background-size: 280rpx 200rpx;
+}
