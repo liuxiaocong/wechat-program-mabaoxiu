@@ -15,6 +15,10 @@ Page({
     babys: [],
     showNav: false,
     focusBabyId: 1,
+    currentPhotoPreviewItemWidth: '320px',
+    currentPhotoPreviewItemHeight: '240px',
+    screenWidth: null,
+    screenHeight: null,
   },
 
   onTapBaby: function (e) {
@@ -38,7 +42,7 @@ Page({
       success: (res) => {
         util.log(res);
         let height = (res.screenWidth - 18) / 3;
-        this.setData({ imageHeight: height + 'px' })
+        this.setData({ imageHeight: height + 'px', screenWidth: res.screenWidth, screenHeight: res.screenHeight })
         this.init();
       },
       fail: function (err) {
@@ -53,9 +57,11 @@ Page({
       let imageItem = {};
       imageItem.id = i;
       if (i % 2 == 0) {
-        imageItem.url = 'https://mbx-photo.oss-cn-shenzhen.aliyuncs.com/599e3e1567e34d2c4f226a65?OSSAccessKeyId=LTAILeWv4PJuLbsV&Expires=1508635800&Signature=Jiw0no6%2Bw3PPljFkUyD%2Fjvza%2FRM%3D&x-oss-process=image%2Fresize%2Cm_fill%2Ch_150%2Cw_150%2Fquality%2CQ_50';
+        imageItem.url = 'https://www.colourbox.com/preview/2536639-bright-picture-of-adorable-baby-boy-over-white.jpg';
+        imageItem.isFavoritesd = true;
       } else {
-        imageItem.url = 'https://mbx-photo.oss-cn-shenzhen.aliyuncs.com/599e8b5f67e34d579115fd48?OSSAccessKeyId=LTAILeWv4PJuLbsV&Expires=1508554800&Signature=adpMAl3R0uxGvPYWVyc1J0Gyqcw%3D&x-oss-process=image%2Fresize%2Cm_fill%2Ch_150%2Cw_150%2Fquality%2CQ_50';
+        imageItem.url = 'http://img0.utuku.china.com/640x0/news/20170622/9270ae73-5e70-4cc8-8b67-e8e50790e770.jpg';
+        imageItem.isFavoritesd = false;
       }
       imageItems.push(imageItem);
     }
@@ -114,11 +120,43 @@ Page({
 
   onClickImageItem: function (e) {
     let item = e.target.dataset.item;
-    util.log(item);
+    let maxHeightPWidth = this.data.screenHeight * 2 / 3 / this.data.screenWidth;
+    let targetHeight = 240;
+    let targetWidth = 320;
     this.setData({
       showPhotoPreview: true,
-      currentPhotoPreviewItem: item
     })
+    util.log("get item:" + item.url);
+    wx.getImageInfo({
+      src: item.url,
+      success: (res) => {
+        util.log(res.width);
+        util.log(res.height);
+        let heightPWidth = res.height / res.width;
+        if (heightPWidth > maxHeightPWidth) {
+          //height image , cut width;
+          targetHeight = this.data.screenHeight * 2 / 3;
+          targetWidth = targetHeight / heightPWidth;
+        } else {
+          //just showfullWidth;
+          targetWidth = this.data.screenWidth;
+          targetHeight = this.data.screenWidth * heightPWidth;
+        }
+        util.log("targetWidth:" + targetWidth);
+        util.log("targetHeight:" + targetHeight);
+        this.setData({
+          currentPhotoPreviewItem: item,
+          currentPhotoPreviewItemWidth: targetWidth + 'px',
+          currentPhotoPreviewItemHeight: targetHeight + 'px'
+        })
+      },
+      fail: function (err) {
+        util.log(err)
+      },
+      complete: function () {
+        util.log("complete")
+      }
+    });
   },
 
   onTapPreivewLayout: function () {

@@ -44,6 +44,7 @@ Page({
     });
     let token = app.globalData.token;
     let phone = this.data.phone;
+    util.log("getCode token:" + token);
     wx.request({
       url: api.sendSmsCaptcha,
       data: {
@@ -136,27 +137,47 @@ Page({
     if (phone && code) {
       wx.showLoading({
         title: '登录中',
-      })
+      });
+      let token = app.globalData.token;
+      let openId = app.globalData.openId;
+      let phone = this.data.phone;
       wx.request({
         url: api.bindOpenIdToPhoneNum,
         data: {
           "appId": api.appid,
           "captcha": code,
-          "openId": "string",
+          "openId": openId,
           "phoneNum": phone
         },
         method: 'POST',
         header: {
+          'Authorization': token,
           'content-type': 'application/json' // 默认值
         },
         success: function (res) {
           wx.hideLoading()
-          util.log("sendSmsCaptcha success");
-          util.log(res.data);
+          util.log("bindOpenIdToPhoneNum success");
+          let code = res.data.code;
+          let token = res.data.data.token;
+          if(code === 20000)
+          {
+            app.globalData.token = token;
+            wx.switchTab({
+              url: '/pages/main/info'
+            });
+          }else{
+            wx.showModal({
+              content: res.data.message,
+              showCancel: false,
+              success: function (res) {
+
+              }
+            })
+          }
         },
         fail: function (err) {
           wx.hideLoading()
-          util.log("sendSmsCaptcha fail");
+          util.log("bindOpenIdToPhoneNum fail");
           util.log(err)
         },
       })

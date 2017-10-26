@@ -18,7 +18,29 @@ const log = msg => {
   console.log(msg);
 }
 
+const saveImageToPhotosAlbum = (url, successCallback, failCallback) => {
+  wx.downloadFile({
+    url: url,
+    success: (res) => {
+      let path = res.tempFilePath;
+      wx.saveImageToPhotosAlbum({
+        filePath: path,
+        success: (res) => {
+          successCallback(res);
+        },
+        fail: (res) => {
+          failCallback(res);
+        }
+      })
+    },
+    fail: (res) => {
+      failCallback(res);
+    }
+  })
+}
+
 module.exports = {
   formatTime: formatTime,
-  log: log
+  log: log,
+  saveImageToPhotosAlbum: saveImageToPhotosAlbum,
 }

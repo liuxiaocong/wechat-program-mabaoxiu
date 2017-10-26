@@ -7,7 +7,7 @@
 		"minified": true
 	},
 	"compileType": "weapp",
-	"libVersion": "1.5.4",
+	"libVersion": "1.6.0",
 	"appid": "wxd093560aa0e2271c",
 	"projectname": "mabaoxiu",
 	"condition": {

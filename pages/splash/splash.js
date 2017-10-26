@@ -83,11 +83,11 @@ Page({
   onShareAppMessage: function () {
 
   },
- 
-  sumbitCodeToServer: function(code){
+
+  sumbitCodeToServer: function (code) {
     let url = api
     wx.request({
-      url: api.wxLogin, 
+      url: api.wxLogin,
       data: {
         "appId": api.appid,
         "jsCode": code
@@ -99,14 +99,30 @@ Page({
       success: function (res) {
         util.log("wxLogin success");
         util.log(res);
-        // wx.redirectTo({
-        //   url: '/pages/index/index'
-        // })
-        wx.switchTab({
-          url: '/pages/main/info'
-        })
+        let code = res.data.code;
+        util.log("code:" + code);
+        if (code === 40101 || code === 20000) {
+          let token = res.data.data.token;
+          let openId = res.data.data.openId;
+          util.log("token:" + token);
+          util.log("openId:" + openId);
+          app.globalData.token = token;
+          app.globalData.openId = openId;
+        }
+        if (code === 20000) {
+          wx.switchTab({
+            url: '/pages/main/info'
+          })
+        } else {
+          // wx.switchTab({
+          //   url: '/pages/main/info'
+          // })
+          wx.redirectTo({
+            url: '/pages/index/index'
+          })
+        }
       },
-      fail: function(err) {
+      fail: function (err) {
         util.log("wxLogin fail");
         util.log(err)
         wx.switchTab({
