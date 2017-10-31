@@ -154,18 +154,21 @@ Page({
           'Authorization': token,
           'content-type': 'application/json' // 默认值
         },
-        success: function (res) {
+        success: (res)=> {
           wx.hideLoading()
           util.log("bindOpenIdToPhoneNum success");
+          util.log(res);
           let code = res.data.code;
-          let token = res.data.data.token;
           if(code === 20000)
           {
+            let token = res.data.data.token;
             app.globalData.token = token;
-            wx.switchTab({
-              url: '/pages/main/info'
-            });
+            this.getAccountInfo();
+            this.getAliyunPolicy();
           }else{
+            wx.showToast({
+              title: 'server error',
+            })
             wx.showModal({
               content: res.data.message,
               showCancel: false,
@@ -176,7 +179,14 @@ Page({
           }
         },
         fail: function (err) {
-          wx.hideLoading()
+          wx.hideLoading();
+          wx.showModal({
+            content: JSON.stringify(err),
+            showCancel: false,
+            success: function (res) {
+
+            }
+          })
           util.log("bindOpenIdToPhoneNum fail");
           util.log(err)
         },
@@ -190,16 +200,55 @@ Page({
         }
       })
     }
-    // wx.showToast({
-    //   title: '登录中',
-    //   icon: 'loading',
-    //   duration: 2000
-    // })
-    // setTimeout(function () {
-    //   wx.switchTab({
-    //     url: '/pages/main/info'
-    //   })
-    // }, 2000)
+  },
+  getAliyunPolicy: () => {
+    let url = api.getAliyunPolicy;
+    wx.request({
+      url: url,
+      method: 'GET',
+      header: {
+        'content-type': 'application/json',
+        'Authorization': app.globalData.token
+      },
+      success: (res) => {
+        util.log("getAliyunPolicy success");
+        util.log(res);
+        app.globalData.aliyunPolicy = res.data.data;
+      },
+      fail: function (err) {
+        util.log("getAliyunPolicy fail");
+        util.log(err);
+      },
+    })
+  },
+
+  getAccountInfo: () => {
+    let url = api.getParentInfo + '?openId=' + app.globalData.openId;
+    wx.request({
+      url: url,
+      method: 'GET',
+      header: {
+        'content-type': 'application/json',
+        'Authorization': app.globalData.token
+      },
+      success: (res) => {
+        util.log("getAccountInfo success");
+        util.log(JSON.stringify(res));
+        app.globalData.accountInfo = res.data.data;
+        app.globalData.children = res.data.data.children;
+        wx.switchTab({
+          url: '/pages/main/info'
+        })
+      },
+      fail: function (err) {
+        util.log("getParentInfo fail");
+        util.log(err);
+        wx.showModal({
+          title: '获取用户数据失败，请退出重进',
+          content: JSON.stringify(err),
+        })
+      },
+    })
   },
 
   onPhoneChange: function (e) {

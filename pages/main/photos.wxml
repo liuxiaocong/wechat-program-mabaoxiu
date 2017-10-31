@@ -1,31 +1,32 @@
 <!--pages/main/photos.wxml-->
 <view wx:if="{{showNav}}" class='baby-nav-wrap'>
-  <view wx:for="{{babys}}" wx:for-index="idx" wx:for-item="baby" wx:key="*this">
-    <view class="baby-wrap" bindtap='onTapBaby' data-babyId='{{baby.id}}' hover-class="baby-wrap-hover">
-      <image class="{{baby.id === focusBabyId?'baby-avatar baby-avatar-active':'baby-avatar'}}" src="{{baby.avatar}}" mode='aspectFill' />
+  <view wx:for="{{children}}" wx:for-index="idx" wx:for-item="child" wx:key="*this">
+    <view class="baby-wrap" bindtap='onTapBaby' data-childid='{{child.childId}}' hover-class="baby-wrap-hover">
+      <image class="{{child.childId === focusChildId?'baby-avatar baby-avatar-active':'baby-avatar'}}" src="{{child.avatarUri?child.avatarUri:defaultAvatar}}" mode='aspectFill' />
     </view>
   </view>
 </view>
-<scroll-view scroll-y>
-  <view class='image-item-list-wrap'>
-    <view class="image-item-wrap" hover-class="image-item-wrap-hover" wx:for="{{currentImageItems}}" wx:for-index="idx" wx:for-item="imageItem" wx:key="*this">
-      <view class='image-item-wrap-inner'>
-        <image data-item='{{imageItem}}' bindtap='onClickImageItem' class="image-item-image" src="{{imageItem.url}}" style='height:{{imageHeight}}' mode='aspectFill' />
+<view class="{{isLoading?'wrap loading-background':'wrap'}}">
+  <scroll-view scroll-y>
+    <view class="image-item-list-wrap">
+      <view class="image-item-wrap" hover-class="image-item-wrap-hover" wx:for="{{currentImageItems}}" wx:for-index="idx" wx:for-item="imageItem" wx:key="*this">
+        <view class='image-item-wrap-inner'>
+          <image data-itemid='{{imageItem.id}}' bindtap='onClickImageItem' class="image-item-image" src="{{imageItem.src}}" style='height:{{imageHeight}}' mode='aspectFill' />
+        </view>
       </view>
     </view>
-  </view>
-</scroll-view>
-
+  </scroll-view>
+</view>
 <view wx:if="{{showPhotoPreview}}" bindtap='onTapPreivewLayout' class='image-view-wrap'>
   <view class='image-view-inner-wrap'>
-    <image class="loading-background image-view-avatar" src="{{currentPhotoPreviewItem.url}}" mode='aspectFit' style='width:{{currentPhotoPreviewItemWidth}};height:{{currentPhotoPreviewItemHeight}}' />
+    <image class="loading-background image-view-avatar" src="{{currentPhotoPreviewItem.src}}" mode='aspectFit' style='width:{{currentPhotoPreviewItemWidth}};height:{{currentPhotoPreviewItemHeight}}' />
     <view class='image-action-wrap'>
       <span wx:if="{{!currentPhotoPreviewItem.id}}" class="placeHolder">
       </span>
-      <image wx:if="{{currentPhotoPreviewItem.id && currentPhotoPreviewItem.isFavoritesd}}"class="favorite" src='/pages/images/unfavoritesd.png' />
-      <image wx:if="{{currentPhotoPreviewItem.id && !currentPhotoPreviewItem.isFavoritesd}}" class="unfavorite" src='/pages/images/favoritesd.png' />
+      <image wx:if="{{currentPhotoPreviewItem.id && currentPhotoPreviewItem.chosen}}" class="favorite" bindtap='onTapUnFavorite' data-imageId='{{currentPhotoPreviewItem.id}}' src='/pages/images/unfavoritesd.png' />
+      <image wx:if="{{currentPhotoPreviewItem.id && !currentPhotoPreviewItem.chosen}}" class="unfavorite" data-imageId='{{currentPhotoPreviewItem.id}}' bindtap='onTapFavorite' src='/pages/images/favoritesd.png' />
       <span class="cancel">取消</span>
-      <image class="delete" src='/pages/images/delete.png' />
+      <image class="delete" bindtap='onTapDelete' data-imageId='{{currentPhotoPreviewItem.id}}' src='/pages/images/delete.png' />
     </view>
   </view>
 </view>

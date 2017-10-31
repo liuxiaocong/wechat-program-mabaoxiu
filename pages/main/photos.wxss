@@ -1,5 +1,8 @@
 /* pages/main/photos.wxss */
-
+.wrap{
+  min-height: 100%;
+  background-size: 280rpx 200rpx;
+}
 .image-view-wrap {
   position: fixed;
   top: 0;
@@ -21,10 +24,12 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  background-position: center center;
 }
 
 .image-item-wrap {
   width: 33%;
+  min-height: 100%;
 }
 
 .image-item-list-wrap {
@@ -101,13 +106,14 @@
 
 .image-action-wrap .favorite, .image-action-wrap .unfavorite,
 .image-action-wrap .delete,.placeHolder {
-  display: block;
+  display: none;
   width: 40rpx;
   height: 40rpx;
   margin: 0 30rpx;
 }
 
 .image-action-wrap .cancel {
+  display: none;
   flex-grow: 1;
   text-align: center;
   color: #04a1e8;

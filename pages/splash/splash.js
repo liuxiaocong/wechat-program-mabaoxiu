@@ -18,21 +18,36 @@ Page({
     wx.getUserInfo({
       success: res => {
         console.log("getUserInfo success");
+        app.globalData.userInfo = res.userInfo;
         console.log(res.userInfo);
+        if (app.globalData.codeToServer !== null) {
+          console.log(app.globalData);
+          //todo login with server
+          this.sumbitCodeToServer(app.globalData.codeToServer);
+        } else {
+          app.loginSuccessCallback = code => {
+            console.log("code to server" + code);
+            console.log(app.globalData);
+            //todo login with server
+            this.sumbitCodeToServer(code);
+          }
+        }
+      },
+      fail: err=>{
+        if (app.globalData.codeToServer !== null) {
+          console.log(app.globalData);
+          //todo login with server
+          this.sumbitCodeToServer(app.globalData.codeToServer);
+        } else {
+          app.loginSuccessCallback = code => {
+            console.log("code to server" + code);
+            console.log(app.globalData);
+            //todo login with server
+            this.sumbitCodeToServer(code);
+          }
+        }
       }
     })
-    if (app.globalData.codeToServer !== null) {
-      console.log(app.globalData);
-      //todo login with server
-      this.sumbitCodeToServer(app.globalData.codeToServer);
-    } else {
-      app.loginSuccessCallback = code => {
-        console.log("code to server" + code);
-        console.log(app.globalData);
-        //todo login with server
-        this.sumbitCodeToServer(code);
-      }
-    }
   },
 
   /**
@@ -84,10 +99,66 @@ Page({
 
   },
 
-  sumbitCodeToServer: function (code) {
-    let url = api
+  getAccountInfo: () => {
+    let url = api.getParentInfo + '?openId=' + app.globalData.openId;
     wx.request({
-      url: api.wxLogin,
+      url: url,
+      method: 'GET',
+      header: {
+        'content-type': 'application/json',
+        'Authorization': app.globalData.token
+      },
+      success: (res) => {
+        util.log("getAccountInfo success");
+        util.log(JSON.stringify(res));
+        app.globalData.accountInfo = res.data.data;
+        app.globalData.children = res.data.data.children;
+        wx.switchTab({
+          url: '/pages/main/info'
+        })
+      },
+      fail: function (err) {
+        util.log("getParentInfo fail");
+        util.log(err);
+        wx.showModal({
+          title: '获取用户数据失败，请退出重进',
+          content: JSON.stringify(err),
+        })
+      },
+    })
+    // wx.switchTab({
+    //   url: '/pages/main/info'
+    // })
+  },
+
+  getAliyunPolicy: ()=> {
+    let url = api.getAliyunPolicy;
+    wx.request({
+      url: url,
+      method: 'GET',
+      header: {
+        'content-type': 'application/json',
+        'Authorization': app.globalData.token
+      },
+      success: (res) => {
+        util.log("getAliyunPolicy success");
+        util.log(res);
+        app.globalData.aliyunPolicy = res.data.data;
+        wx.switchTab({
+          url: '/pages/main/info'
+        })
+      },
+      fail: function (err) {
+        util.log("getAliyunPolicy fail");
+        util.log(err);
+      },
+    })
+  },
+
+  sumbitCodeToServer: function (code) {
+    let url = api.wxLogin
+    wx.request({
+      url: url,
       data: {
         "appId": api.appid,
         "jsCode": code
@@ -96,7 +167,7 @@ Page({
       header: {
         'content-type': 'application/json' // 默认值
       },
-      success: function (res) {
+      success: (res) => {
         util.log("wxLogin success");
         util.log(res);
         let code = res.data.code;
@@ -110,9 +181,8 @@ Page({
           app.globalData.openId = openId;
         }
         if (code === 20000) {
-          wx.switchTab({
-            url: '/pages/main/info'
-          })
+          this.getAccountInfo();
+          this.getAliyunPolicy();
         } else {
           // wx.switchTab({
           //   url: '/pages/main/info'
@@ -130,7 +200,6 @@ Page({
         })
       },
     })
-
     // let time = 1000;
     // if (app.globalData.isDebug)
     // {

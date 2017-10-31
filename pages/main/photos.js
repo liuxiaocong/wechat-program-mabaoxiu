@@ -12,29 +12,36 @@ Page({
     currentPhotoPreviewItem: {},
     currentImageItems: [],
     imageHeight: '90px',
-    babys: [],
+    children: [],
     showNav: false,
-    focusBabyId: 1,
+    focusChildId: 1,
     currentPhotoPreviewItemWidth: '320px',
     currentPhotoPreviewItemHeight: '240px',
     screenWidth: null,
     screenHeight: null,
+    defaultAvatar: "/pages/images/baby-default.jpg",
+    isLoading:false,
   },
 
   onTapBaby: function (e) {
-    let babyId = e.currentTarget.dataset.babyid;
-    util.log(babyId);
-    this.setData({ focusBabyId: babyId });
+    if (this.data.isLoading)
+    {
+      return;
+    }
+    let childid = e.currentTarget.dataset.childid;
+    util.log(childid);
+    this.load(childid, 0, 50)
+    this.setData({ focusChildId: childid });
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    if (app.globalData.userInfo) {
-      let showNav = app.globalData.babys && app.globalData.babys.length > 1;
+    if (app.globalData.accountInfo) {
+      let showNav = app.globalData.accountInfo.children && app.globalData.accountInfo.children.length > 1;
       this.setData({
-        babys: app.globalData.babys,
+        children: app.globalData.accountInfo.children,
         showNav: showNav,
       })
     }
@@ -52,21 +59,59 @@ Page({
   },
 
   init: function () {
-    let imageItems = [];
-    for (let i = 0; i < 20; i++) {
-      let imageItem = {};
-      imageItem.id = i;
-      if (i % 2 == 0) {
-        imageItem.url = 'https://www.colourbox.com/preview/2536639-bright-picture-of-adorable-baby-boy-over-white.jpg';
-        imageItem.isFavoritesd = true;
-      } else {
-        imageItem.url = 'http://img0.utuku.china.com/640x0/news/20170622/9270ae73-5e70-4cc8-8b67-e8e50790e770.jpg';
-        imageItem.isFavoritesd = false;
-      }
-      imageItems.push(imageItem);
+    let child;
+    if (app.globalData.accountInfo && app.globalData.accountInfo.children) {
+      child = app.globalData.accountInfo.children[0];
+      this.setData({
+        focusChildId: child.childId
+      })
+      this.load(child.childId, 0, 50);
     }
-    util.log(imageItems);
-    this.setData({ currentImageItems: imageItems });
+  },
+
+  load: function (childId, page, size) {
+    let url = api.getChildPhotoList + "?childId=" + childId + "&pageNo=0&pageSize=50";
+    util.log(url);
+    this.setData({
+      isLoading:true
+    })
+    wx.request({
+      url: url,
+      method: 'GET',
+      header: {
+        'content-type': 'application/json',
+        'Authorization': app.globalData.token
+      },
+      success: (res) => {
+        util.log("getChildPhotoList success");
+        if (res.statusCode == 200 && res.data.code == 20000) {
+          console.log(res.data.data.results);
+          this.setData({ 
+            currentImageItems: res.data.data.results,
+            isLoading: false
+            });
+        } else {
+          this.setData({
+            isLoading: false
+          })
+          wx.showModal({
+            title: '获取用户数据失败',
+            content: JSON.stringify(err),
+          })
+        }
+      },
+      fail: function (err) {
+        util.log("getChildPhotoList fail");
+        util.log(err);
+        this.setData({
+          isLoading: false
+        })
+        wx.showModal({
+          title: '获取用户数据失败',
+          content: JSON.stringify(err),
+        })
+      },
+    })
   },
 
   /**
@@ -119,17 +164,32 @@ Page({
   },
 
   onClickImageItem: function (e) {
-    let item = e.target.dataset.item;
+    let itemid = e.target.dataset.itemid;
+    util.log(itemid);
+    let item = {};
+    for (let i = 0; i < this.data.currentImageItems.length;i++)
+    {
+      if (itemid === this.data.currentImageItems[i].id)
+      {
+        item = this.data.currentImageItems[i];
+        break;
+      }
+    }
+    util.log(item);
     let maxHeightPWidth = this.data.screenHeight * 2 / 3 / this.data.screenWidth;
     let targetHeight = 240;
     let targetWidth = 320;
     this.setData({
       showPhotoPreview: true,
     })
-    util.log("get item:" + item.url);
+    util.log("get item:" + item.src);
+    
     wx.getImageInfo({
-      src: item.url,
+      src: item.src,
       success: (res) => {
+        wx.showToast({
+          title: 'success',
+        })
         util.log(res.width);
         util.log(res.height);
         let heightPWidth = res.height / res.width;
@@ -151,7 +211,14 @@ Page({
         })
       },
       fail: function (err) {
-        util.log(err)
+        wx.showToast({
+          title: 'fail',
+        })
+        this.setData({
+          currentPhotoPreviewItem: item,
+          currentPhotoPreviewItemWidth: targetWidth + 'px',
+          currentPhotoPreviewItemHeight: targetHeight + 'px'
+        })
       },
       complete: function () {
         util.log("complete")
@@ -164,5 +231,20 @@ Page({
       showPhotoPreview: false,
       currentPhotoPreviewItem: {}
     })
-  }
+  },
+
+  onTapFavorite: function (e) {
+    let imageId = e.currentTarget.dataset.imageid;
+    console.log(imageId);
+  },
+
+  onTapUnFavorite: function (e) {
+    let imageId = e.currentTarget.dataset.imageid;
+    console.log(imageId);
+  },
+
+  onTapDelete: function (e) {
+    let imageId = e.currentTarget.dataset.imageid;
+    console.log(imageId);
+  },
 })

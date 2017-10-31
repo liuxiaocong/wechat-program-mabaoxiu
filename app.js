@@ -5,18 +5,6 @@ App({
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
-    wx.request({
-      url: "https://apiloopstest.shabikplus.mozat.com/game/get_game_list?uid=200321&sig=bf6b13bd37ec4173b7b075dc92bf989a",
-      header: {
-        'content-type': 'application/json' // 默认值
-      },
-      success: function (res) {
-        console.log(res.data)
-      },
-      fail: function (res) {
-        console.log(res)
-      }
-    })
     // 登录
     wx.login({
       success: res => {
@@ -55,11 +43,11 @@ App({
     })
   },
 
-  getBabyById(id) {
-    if (this.globalData.babys) {
-      for (let i = 0; i < this.globalData.babys.length; i++) {
-        if (this.globalData.babys[i].id === id) {
-          return this.globalData.babys[i];
+  getChildById(id) {
+    if (this.globalData.children) {
+      for (let i = 0; i < this.globalData.children.length; i++) {
+        if (this.globalData.children[i].childId === id) {
+          return this.globalData.children[i];
         }
       }
     }
@@ -68,56 +56,23 @@ App({
 
   globalData: {
     userInfo: null,
+    accountInfo: null,
     codeToServer: null,
     token: null,
     openId: null,
-    babys: [{
-      id: 1,
-      name: "baby1",
-      age: 3,
-      canAddTemplate: true,
-      avatar: "/pages/images/baby-default.jpg", relation: "母子",
-      templates: [
-        {
-          url: "/pages/images/baby-template-default.jpg"
-        },
-        {
-          url: "/pages/images/baby-template-default.jpg"
-        }, {
-          url: "/pages/images/baby-template-default.jpg"
-        },
-        {
-          url: "/pages/images/baby-template-default.jpg"
-        },
-        {
-          url: "/pages/images/baby-template-default.jpg"
-        }
-      ]
-    },
-    {
-      id: 2,
-      name: "baby2",
-      age: 5,
-      canAddTemplate: false,
-      avatar: "/pages/images/baby-default.jpg",
-      relation: "父子",
-      templates: [
-        {
-          url: "/pages/images/baby-template-default.jpg"
-        },
-        {
-          url: "/pages/images/baby-template-default.jpg"
-        }, {
-          url: "/pages/images/baby-template-default.jpg"
-        },
-        {
-          url: "/pages/images/baby-template-default.jpg"
-        },
-        {
-          url: "/pages/images/baby-template-default.jpg"
-        }
-      ]
-    }],
+    aliyunPolicy: null,
+    children: [],
     isDebug: false
-  }
+  },
+
+  updateChildById(id,obj) {
+    if (this.globalData.children) {
+      for (let i = 0; i < this.globalData.children.length; i++) {
+        if (this.globalData.children[i].childId === id) {
+          this.globalData.children[i] = Object.assign(this.globalData.children[i],obj);
+          console.log(this.globalData.children[i]);
+        }
+      }
+    }
+  },
 })

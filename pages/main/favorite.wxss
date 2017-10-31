@@ -1,0 +1,11 @@
+/* pages/main/favorite.wxss */
+
+.image-item-image{
+  width: 100%;
+  background: #fff;
+}
+
+.page-wrap{
+  background-color: #f0eff5;
+  padding: 10rpx 0;
+}

@@ -1,0 +1,11 @@
+<!--pages/main/favorite.wxml-->
+<text>pages/main/favorite.wxml</text>
+<scroll-view scroll-y class='page-wrap'>
+  <view class='image-item-list-wrap'>
+    <view class="image-item-wrap" hover-class="image-item-wrap-hover" wx:for="{{currentImageItems}}" wx:for-index="idx" wx:for-item="imageItem" wx:key="*this">
+      <view class='image-item-wrap-inner'>
+        <image data-item='{{imageItem}}' bindtap='onClickImageItem' class="image-item-image" src="{{imageItem.url}}" style='' mode='aspectFit' />
+      </view>
+    </view>
+  </view>
+</scroll-view>

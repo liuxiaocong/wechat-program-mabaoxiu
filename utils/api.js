@@ -1,11 +1,14 @@
 let host = "https://kinder.mabaoxiu.cn";
 let api = {
   appid: 'wxd093560aa0e2271c',
-  sendSmsCaptcha: host + '/api/misc/sendSmsCaptcha',
+  bindOpenIdToPhoneNum: host + '/api/parent/auth/bindOpenIdToPhoneNum',
+  wxLogin: host + '/api/parent/auth/wxLogin',
+  sendSmsCaptcha: host + '/api/parent/auth/sendSmsCaptcha',
   getParentInfo: host + '/api/parent/account/getParentInfo',
-  bindOpenIdToPhoneNum: host + '/api/parent/account/bindOpenIdToPhoneNum',
-  wxLogin: host + '/api/parent/account/wxLogin' ,
-  updateChildInfo: host + '/parent/child/updateChildInfo',
-  getAliyunPolicy: host + '/misc/getAliyunPolicy'
+  updateChildInfo: host + '/api/parent/child/updateChildInfo',
+  getAliyunPolicy: host + '/api/oss/getUploadPhotoPolicy',
+  updateParentInfo: host + '/api/parent/account/updateParentInfo',
+  updateChildInfo: host + '/api/parent/account/updateChildInfo',
+  getChildPhotoList: host + '/api/parent/childPhoto/getChildPhotoList'
 }
 module.exports = api;

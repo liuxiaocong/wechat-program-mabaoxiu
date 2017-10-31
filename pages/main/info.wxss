@@ -34,7 +34,6 @@ button.set-name-btn {
   border-radius: 30rpx;
   width: 140rpx;
   height: 60rpx;
-  background: #fff;
   border: 1rpx solid #aaa;
   color: #aaa;
 }
@@ -156,6 +155,7 @@ button.set-name-btn {
 .baby-temp-list-wrap {
   display: flex;
   flex-wrap: nowrap;
+  padding: 0 10rpx;
 }
 
 .baby-templates-item-wrap {
@@ -168,9 +168,9 @@ button.set-name-btn {
 }
 
 .baby-templates-item {
-  width: 200rpx;
-  height: 200rpx;
-  margin: 20rpx;
+  width: 220rpx;
+  height: 220rpx;
+  margin: 10rpx;
   border: 1px solid #ddd;
   border-radius: 10rpx;
 }
@@ -201,4 +201,10 @@ button.set-name-btn {
 
 .baby-social-photo-count,.baby-social-comment-count,.baby-social-like-count{
   margin-left: 10rpx;
+}
+
+.info{
+  display: flex;
+  font-size: 8px;
+  word-break: break-all;
 }

@@ -30,11 +30,16 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    if (app.globalData.userInfo) {
-      this.setData({
-        currentName: app.globalData.userInfo.nickName
-      })
-    } 
+    let name = "";
+    if (app.globalData.accountInfo)
+    {
+      name = app.globalData.accountInfo.name;
+    } else if (app.globalData.userInfo){
+      name = app.globalData.userInfo.nickName;
+    }
+    this.setData({
+      currentName: name
+    })
   },
 
   /**
@@ -93,7 +98,63 @@ Page({
 
   formSubmit: function (e) {
     console.log(e.detail.value);
+    let token = app.globalData.token;
+    let phone = app.globalData.accountInfo.phoneNum;
+    let url = api.updateParentInfo
     let values = e.detail.value;
     let name = values.name;
+    let rData = {
+      "phoneNum": phone,
+      "name": name
+    };
+    console.log(rData);
+    wx.showLoading({
+      title: '更新中',
+    })
+    wx.request({
+      url: url,
+      data: rData,
+      method: 'POST',
+      header: {
+        'content-type': 'application/json', // 默认值
+        'Authorization': token
+      },
+      success: (res) => {
+        wx.hideLoading();
+        util.log("updateParentInfo success");
+        util.log(res);
+        let code = res.data.code;
+        util.log("code:" + code);
+        if (code === 20000) {
+          app.globalData.accountInfo.name = name;
+          wx.showToast({
+            icon: 'success',
+            title: '更新成功',
+            duration: 1000,
+            complete:()=>{
+              setTimeout(()=>{
+                wx.switchTab({
+                  url: '/pages/main/info'
+                })
+              },1000)
+            }
+          })
+        } else {
+          wx.showModal({
+            title: '更新失败',
+            content: res,message,
+          })
+        }
+      },
+      fail: function (err) {
+        wx.hideLoading();
+        util.log("updateParentInfo fail");
+        util.log(err)
+        wx.showModal({
+          title: '更新失败',
+          content: JSON.stringify(err),
+        })
+      },
+    })
   }
 })

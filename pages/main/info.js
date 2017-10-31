@@ -11,21 +11,15 @@ Page({
     userAvatar: '/pages/images/default-avatar.png',
     userName: '请设置昵称',
     showSign: true,
-    babys:[]
+    children: [],
+    defaultAvatar: "/pages/images/baby-default.jpg"
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    if (app.globalData.userInfo) {
-      this.setData({
-        userAvatar: app.globalData.userInfo.avatarUrl,
-        userName: app.globalData.userInfo.nickName,
-        hasUserInfo: true,
-        babys: app.globalData.babys
-      })
-    }
+
   },
 
   /**
@@ -39,7 +33,43 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    let children = [];
+    if (app.globalData.accountInfo && app.globalData.accountInfo.children) {
+      children = app.globalData.accountInfo.children;
+    }
+    children.forEach((child) => {
+      if (!child.relationType) {
+        child.relationType = "未定义"
+      }
+      child.canAddTemplate = child.templates.length < 25;
+    })
+    if (app.globalData.userInfo) {
+      this.setData({
+        userAvatar: app.globalData.userInfo.avatarUrl,
+        userName: this.getParentName(),
+        hasUserInfo: true,
+        children: children,
+        accountInfo: JSON.stringify(app.globalData.accountInfo),
+        aliyunPolicy: JSON.stringify(app.globalData.aliyunPolicy),
+      })
+    }
+  },
 
+  getRelationShipByType: function (relationType) {
+    switch (relationType) {
+      case 0: {
+        return '未定义';
+      }
+      case 1: {
+        return '母子';
+      }
+      case 2: {
+        return '父子';
+      }
+      default: {
+        return '未定义';
+      }
+    }
   },
 
   /**
@@ -77,17 +107,62 @@ Page({
 
   },
 
-  clickEditName: function() {
+  clickEditName: function () {
     wx.navigateTo({
       url: '/pages/setName/setName'
     })
   },
 
-  clickEditBaby: function(e){
-    util.log(e.target.dataset.id);
+  getParentName: function () {
+    if (app.globalData.accountInfo) {
+      return app.globalData.accountInfo.name;
+    } else {
+      return app.globalData.userInfo.nickName;
+    }
+  },
+
+  clickEditBaby: function (e) {
+    util.log(e.target.dataset.childid);
     wx.navigateTo({
-      url: '/pages/setBaby/setBaby?id=' + e.target.dataset.id,
+      url: '/pages/setBaby/setBaby?childid=' + e.target.dataset.childid,
     })
+  },
+
+  clickAddTemplate: function (e) {
+    let childId = e.target.dataset.childid;
+    let aliyunPolicy = app.globalData.aliyunPolicy;
+    let openId = app.globalData.openId;
+    let token = app.globalData.token;
+    util.log(childId);
+    util.uploadTemplateToAliyun("http://www.lucid.ac.uk/media/1436/baby-pointing-cropped.jpg?width=740&height=550&mode=crop&quality=75",
+      aliyunPolicy,
+      openId,
+      token,
+      childId,
+      (res) => {
+        util.log("info uploadTemplateToAliyun success");
+        util.log(res);
+        if(res.code === 20000)
+        {
+          let data =res.data;
+          console.log(data);
+          this.setData({
+            uploadCallbackInfo: data
+          })
+        }else{
+          wx.showModal({
+            title: '上传失败',
+            content: res.message,
+          })
+        }
+      }, (err)=> {
+        this.setData({
+          uploadCallbackInfo: JSON.stringify(err)
+        })
+        util.log("uploadTemplateToAliyun fail");
+        util.log(err);
+      }
+    )
   },
 
   goWeui: function () {
