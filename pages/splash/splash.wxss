@@ -5,3 +5,19 @@ page{
 .splash {
    width:100%;
 }
+.wrap {
+  text-align: center;
+}
+
+.type {
+  color: '#000';
+  position:absolute;
+  bottom: 20rpx;
+  left: 0;
+  right: 0;
+  font-size: 9px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

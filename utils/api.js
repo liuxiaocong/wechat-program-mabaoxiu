@@ -9,6 +9,11 @@ let api = {
   getAliyunPolicy: host + '/api/oss/getUploadPhotoPolicy',
   updateParentInfo: host + '/api/parent/account/updateParentInfo',
   updateChildInfo: host + '/api/parent/account/updateChildInfo',
-  getChildPhotoList: host + '/api/parent/childPhoto/getChildPhotoList'
+  getChildPhotoList: host + '/api/parent/childPhoto/getChildPhotoList',
+  deleteChildPhoto: host + '/parent/childPhoto/deleteChildPhoto',
+  updateChosenByChildPhoto: host + '/parent/childPhoto/updateChosenByChildPhoto',
+  unvoteChildPhoto: host + '/parent/photo/unvoteChildPhoto',
+  voteChildPhoto: host + '/parent/photo/voteChildPhoto',
+
 }
 module.exports = api;

@@ -1,4 +1,5 @@
 <!--pages/splash/splash.wxml-->
-<view>
+<view class='wrap'>
   <image src="/pages/images/splash.png" class="splash" mode='widthFix'></image>
+  <view  class='type'>@妈宝秀提供技术支持</view>
 </view>

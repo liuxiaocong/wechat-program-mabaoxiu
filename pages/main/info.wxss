@@ -27,16 +27,6 @@
   display: block;
 }
 
-button.set-name-btn {
-  font-size: 0.7em;
-  background: #fff;
-  padding: 0;
-  border-radius: 30rpx;
-  width: 140rpx;
-  height: 60rpx;
-  border: 1rpx solid #aaa;
-  color: #aaa;
-}
 
 .sign-wrap {
   position: fixed;
@@ -98,11 +88,24 @@ button.set-name-btn {
   margin-right: 30rpx;
 }
 
+.set-name-btn {
+  display: inline-block;
+  width: 160rpx;
+  font-size: 0.7em;
+  height: 50rpx;
+  line-height: 50rpx;
+  padding: 0;
+  background: #fff;
+  border-radius: 80rpx;
+  color: #04a1e8;
+  border: 1px solid #04a1e8;
+}
+
 .add-template-btn {
   margin-left: 20rpx;
 }
 
-.add-template-btn-hover, .edit-baby-btn-hover {
+.add-template-btn-hover, .edit-baby-btn-hover, .set-name-btn-hover {
   background: #04a1e8;
   color: #fff;
 }

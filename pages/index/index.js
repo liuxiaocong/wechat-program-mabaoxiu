@@ -59,6 +59,13 @@ Page({
       success: function (res) {
         util.log("sendSmsCaptcha success");
         util.log(res.data);
+        let code = res.data.code;
+        if (code === 40103) {
+          wx.showModal({
+            title: '授权失败',
+            content: '系统无法验证您的用户身份，请联系幼儿园老师',
+          })
+        }
       },
       fail: function (err) {
         util.log("sendSmsCaptcha fail");
@@ -154,21 +161,17 @@ Page({
           'Authorization': token,
           'content-type': 'application/json' // 默认值
         },
-        success: (res)=> {
+        success: (res) => {
           wx.hideLoading()
           util.log("bindOpenIdToPhoneNum success");
           util.log(res);
           let code = res.data.code;
-          if(code === 20000)
-          {
+          if (code === 20000) {
             let token = res.data.data.token;
             app.globalData.token = token;
             this.getAccountInfo();
             this.getAliyunPolicy();
-          }else{
-            wx.showToast({
-              title: 'server error',
-            })
+          } else {
             wx.showModal({
               content: res.data.message,
               showCancel: false,

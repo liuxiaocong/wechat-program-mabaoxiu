@@ -6,7 +6,7 @@
     <view class="set-name-avatar-name">
       <view class="weui-media-box__title">{{userName}}</view>
     </view>
-    <button bindtap="clickEditName" class="weui-btn mini-btn set-name-btn" type="default" size="mini">修改昵称</button>
+    <button bindtap="clickEditName" class="set-name-btn" hover-class="set-name-btn-hover">修改昵称</button>
   </view>
   <view wx:for="{{children}}" wx:for-index="idx" wx:for-item="child" wx:key="*this">
     <view class="baby-base-info-wrap" hover-class="baby-base-info-wrap-hover">

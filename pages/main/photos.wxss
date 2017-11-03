@@ -43,6 +43,7 @@
 .image-item-image {
   width: 100%;
   display: block;
+  margin-top: 40rpx;
 }
 
 .image-view-inner-wrap {
@@ -106,7 +107,6 @@
 
 .image-action-wrap .favorite, .image-action-wrap .unfavorite,
 .image-action-wrap .delete,.placeHolder {
-  display: none;
   width: 40rpx;
   height: 40rpx;
   margin: 0 30rpx;

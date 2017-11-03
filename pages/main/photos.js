@@ -10,6 +10,7 @@ Page({
   data: {
     showPhotoPreview: false,
     currentPhotoPreviewItem: {},
+    showPreviewPhoto: false,
     currentImageItems: [],
     imageHeight: '90px',
     children: [],
@@ -181,49 +182,11 @@ Page({
     let targetWidth = 320;
     this.setData({
       showPhotoPreview: true,
+      showPreviewPhoto: false,
+      currentPhotoPreviewItem: item,
+      currentPhotoPreviewItemWidth: targetWidth + 'px',
+      currentPhotoPreviewItemHeight: targetHeight + 'px'
     })
-    util.log("get item:" + item.src);
-    
-    wx.getImageInfo({
-      src: item.src,
-      success: (res) => {
-        wx.showToast({
-          title: 'success',
-        })
-        util.log(res.width);
-        util.log(res.height);
-        let heightPWidth = res.height / res.width;
-        if (heightPWidth > maxHeightPWidth) {
-          //height image , cut width;
-          targetHeight = this.data.screenHeight * 2 / 3;
-          targetWidth = targetHeight / heightPWidth;
-        } else {
-          //just showfullWidth;
-          targetWidth = this.data.screenWidth;
-          targetHeight = this.data.screenWidth * heightPWidth;
-        }
-        util.log("targetWidth:" + targetWidth);
-        util.log("targetHeight:" + targetHeight);
-        this.setData({
-          currentPhotoPreviewItem: item,
-          currentPhotoPreviewItemWidth: targetWidth + 'px',
-          currentPhotoPreviewItemHeight: targetHeight + 'px'
-        })
-      },
-      fail: function (err) {
-        wx.showToast({
-          title: 'fail',
-        })
-        this.setData({
-          currentPhotoPreviewItem: item,
-          currentPhotoPreviewItemWidth: targetWidth + 'px',
-          currentPhotoPreviewItemHeight: targetHeight + 'px'
-        })
-      },
-      complete: function () {
-        util.log("complete")
-      }
-    });
   },
 
   onTapPreivewLayout: function () {
@@ -241,6 +204,31 @@ Page({
   onTapUnFavorite: function (e) {
     let imageId = e.currentTarget.dataset.imageid;
     console.log(imageId);
+  },
+
+  onPreviewImageLoad: function(e){
+    util.log("onPreviewImageLoad");
+    util.log(e.detail);
+    let maxHeightPWidth = this.data.screenHeight * 2 / 3 / this.data.screenWidth;
+    let targetHeight = 240;
+    let targetWidth = 320;
+    let heightPWidth = e.detail.height / e.detail.width;
+    if (heightPWidth > maxHeightPWidth) {
+      //height image , cut width;
+      targetHeight = this.data.screenHeight * 2 / 3;
+      targetWidth = targetHeight / heightPWidth;
+    } else {
+      //just showfullWidth;
+      targetWidth = this.data.screenWidth;
+      targetHeight = this.data.screenWidth * heightPWidth;
+    }
+    util.log("targetWidth:" + targetWidth);
+    util.log("targetHeight:" + targetHeight);
+    this.setData({
+      showPreviewPhoto:true,
+      currentPhotoPreviewItemWidth: targetWidth + 'px',
+      currentPhotoPreviewItemHeight: targetHeight + 'px'
+    })
   },
 
   onTapDelete: function (e) {

@@ -15,6 +15,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    return
     wx.getUserInfo({
       success: res => {
         console.log("getUserInfo success");
@@ -156,7 +157,8 @@ Page({
   },
 
   sumbitCodeToServer: function (code) {
-    let url = api.wxLogin
+    let url = api.wxLogin;
+    util.log("start wxlogin:" + code);
     wx.request({
       url: url,
       data: {
@@ -195,8 +197,9 @@ Page({
       fail: function (err) {
         util.log("wxLogin fail");
         util.log(err)
-        wx.switchTab({
-          url: '/pages/main/info'
+        wx.showModal({
+          title: '授权失败',
+          content: '请退出小程序重新进入',
         })
       },
     })

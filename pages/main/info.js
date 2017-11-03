@@ -33,6 +33,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    util.log("info onshow");
     let children = [];
     if (app.globalData.accountInfo && app.globalData.accountInfo.children) {
       children = app.globalData.accountInfo.children;
@@ -149,6 +150,7 @@ Page({
           this.setData({
             uploadCallbackInfo: data
           })
+          this.refreshAccountInfo();
         }else{
           wx.showModal({
             title: '上传失败',
@@ -163,6 +165,32 @@ Page({
         util.log(err);
       }
     )
+  },
+
+  refreshAccountInfo: () => {
+    let url = api.getParentInfo + '?openId=' + app.globalData.openId;
+    wx.request({
+      url: url,
+      method: 'GET',
+      header: {
+        'content-type': 'application/json',
+        'Authorization': app.globalData.token
+      },
+      success: (res) => {
+        util.log("refreshAccountInfo success");
+        util.log(JSON.stringify(res));
+        app.globalData.accountInfo = res.data.data;
+        app.globalData.children = res.data.data.children;
+        this.setData({
+          children: app.globalData.children
+        })
+        
+      },
+      fail: function (err) {
+        util.log("refreshAccountInfo fail");
+        util.log(err);
+      },
+    })
   },
 
   goWeui: function () {
