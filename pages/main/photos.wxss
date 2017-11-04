@@ -113,7 +113,6 @@
 }
 
 .image-action-wrap .cancel {
-  display: none;
   flex-grow: 1;
   text-align: center;
   color: #04a1e8;

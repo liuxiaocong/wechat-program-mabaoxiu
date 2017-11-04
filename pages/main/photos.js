@@ -10,7 +10,6 @@ Page({
   data: {
     showPhotoPreview: false,
     currentPhotoPreviewItem: {},
-    showPreviewPhoto: false,
     currentImageItems: [],
     imageHeight: '90px',
     children: [],
@@ -21,12 +20,13 @@ Page({
     screenWidth: null,
     screenHeight: null,
     defaultAvatar: "/pages/images/baby-default.jpg",
-    isLoading:false,
+    isLoading: false,
+    isFaving: false,
+    isDeleting: false
   },
 
   onTapBaby: function (e) {
-    if (this.data.isLoading)
-    {
+    if (this.data.isLoading) {
       return;
     }
     let childid = e.currentTarget.dataset.childid;
@@ -74,7 +74,7 @@ Page({
     let url = api.getChildPhotoList + "?childId=" + childId + "&pageNo=0&pageSize=50";
     util.log(url);
     this.setData({
-      isLoading:true
+      isLoading: true
     })
     wx.request({
       url: url,
@@ -87,10 +87,10 @@ Page({
         util.log("getChildPhotoList success");
         if (res.statusCode == 200 && res.data.code == 20000) {
           console.log(res.data.data.results);
-          this.setData({ 
+          this.setData({
             currentImageItems: res.data.data.results,
             isLoading: false
-            });
+          });
         } else {
           this.setData({
             isLoading: false
@@ -168,10 +168,8 @@ Page({
     let itemid = e.target.dataset.itemid;
     util.log(itemid);
     let item = {};
-    for (let i = 0; i < this.data.currentImageItems.length;i++)
-    {
-      if (itemid === this.data.currentImageItems[i].id)
-      {
+    for (let i = 0; i < this.data.currentImageItems.length; i++) {
+      if (itemid === this.data.currentImageItems[i].id) {
         item = this.data.currentImageItems[i];
         break;
       }
@@ -182,7 +180,6 @@ Page({
     let targetWidth = 320;
     this.setData({
       showPhotoPreview: true,
-      showPreviewPhoto: false,
       currentPhotoPreviewItem: item,
       currentPhotoPreviewItemWidth: targetWidth + 'px',
       currentPhotoPreviewItemHeight: targetHeight + 'px'
@@ -198,15 +195,152 @@ Page({
 
   onTapFavorite: function (e) {
     let imageId = e.currentTarget.dataset.imageid;
+    let childId = this.data.focusChildId;
+    console.log(childId);
     console.log(imageId);
+    let url = api.updateChosenByChildPhoto;
+    util.log(url);
+    this.setData({
+      isFaving: true
+    })
+    let data = {
+      "childId": childId,
+      "photoId": imageId
+    }
+    wx.request({
+      url: url,
+      method: 'PUT',
+      header: {
+        'content-type': 'application/json',
+        'Authorization': app.globalData.token
+      },
+      data: data,
+      success: (res) => {
+        this.setData({
+          isFaving: false
+        });
+        util.log("updateChosenByChildPhoto put success");
+        util.log(res);
+        if (res.statusCode == 200 && res.data.code == 20000) {
+          this.updatePhotoChosenStatus(imageId, true);
+          wx.showToast({
+            title: '成功加入精选',
+          })
+        } else {
+          wx.showModal({
+            title: '加入精选失败',
+            content: JSON.stringify(res.data.message),
+          })
+        }
+      },
+      fail: (err) => {
+        util.log("updateChosenByChildPhoto put fail");
+        util.log(err);
+        this.setData({
+          isFaving: false
+        })
+        wx.showModal({
+          title: '加入精选失败',
+          content: JSON.stringify(err),
+        })
+      },
+    })
+  },
+  removePhotoById: function (id) {
+    let index = -1;
+    if (this.data.currentImageItems && this.data.currentImageItems.length > 0) {
+      for (let i = 0; i < this.data.currentImageItems.length; i++) {
+        if (this.data.currentImageItems[i].id === id) {
+          index = i;
+        }
+      }
+    }
+    if(index>=0)
+    {
+      this.data.currentImageItems.splice(index, 1);
+      this.setData({
+        currentImageItems: this.data.currentImageItems
+      })
+    }
+  },
+
+  updatePhotoChosenStatus: function (id, isChosen) {
+    util.log(id);
+    let item = this.data.currentPhotoPreviewItem;
+    if (item && item.id === id) {
+      item.chosen = isChosen;
+      this.setData({
+        currentPhotoPreviewItem: item
+      })
+    };
+    if (this.data.currentImageItems && this.data.currentImageItems.length > 0) {
+      for (let i = 0; i < this.data.currentImageItems.length; i++) {
+        if (this.data.currentImageItems[i].id === id) {
+          this.data.currentImageItems[i].chosen = isChosen;
+          this.setData({
+            currentImageItems: this.data.currentImageItems
+          })
+          break;
+        }
+      }
+    }
   },
 
   onTapUnFavorite: function (e) {
     let imageId = e.currentTarget.dataset.imageid;
+    let childId = this.data.focusChildId;
+    console.log(childId);
     console.log(imageId);
+    let url = api.updateChosenByChildPhoto;
+    util.log(url);
+    this.setData({
+      isFaving: true
+    })
+    let data = {
+      "childId": childId,
+      "photoId": imageId
+    }
+    wx.request({
+      url: url,
+      method: 'DELETE',
+      header: {
+        'content-type': 'application/json',
+        'Authorization': app.globalData.token
+      },
+      data: data,
+      success: (res) => {
+        this.setData({
+          isFaving: false
+        });
+        util.log("updateChosenByChildPhoto delete success");
+        util.log(res);
+        if (res.statusCode == 200 && res.data.code == 20000) {
+          this.updatePhotoChosenStatus(imageId, false);
+          wx.showToast({
+            title: '成功移出精选',
+          })
+        } else {
+          wx.showModal({
+            title: '移出精选失败',
+            content: JSON.stringify(res.data.message),
+          })
+        }
+      },
+      fail: (err) => {
+        util.log("updateChosenByChildPhoto delete fail");
+        util.log(err);
+        this.setData({
+          isFaving: false
+        })
+        wx.showModal({
+          title: '移出精选失败',
+          content: JSON.stringify(err),
+        })
+      },
+    })
   },
 
-  onPreviewImageLoad: function(e){
+  onPreviewImageLoad: function (e) {
     util.log("onPreviewImageLoad");
     util.log(e.detail);
     let maxHeightPWidth = this.data.screenHeight * 2 / 3 / this.data.screenWidth;
@@ -225,7 +359,6 @@ Page({
     util.log("targetWidth:" + targetWidth);
     util.log("targetHeight:" + targetHeight);
     this.setData({
-      showPreviewPhoto:true,
       currentPhotoPreviewItemWidth: targetWidth + 'px',
       currentPhotoPreviewItemHeight: targetHeight + 'px'
     })
@@ -233,6 +366,56 @@ Page({
 
   onTapDelete: function (e) {
     let imageId = e.currentTarget.dataset.imageid;
+    let childId = this.data.focusChildId;
+    console.log(childId);
     console.log(imageId);
+    let url = api.deleteChildPhoto;
+    util.log(url);
+    this.setData({
+      isFaving: true
+    })
+    let data = {
+      "childId": childId,
+      "photoId": imageId
+    }
+    wx.showLoading({
+      title: '删除中..',
+    })
+    wx.request({
+      url: url,
+      method: 'DELETE',
+      header: {
+        'content-type': 'application/json',
+        'Authorization': app.globalData.token
+      },
+      data: data,
+      success: (res) => {
+        wx.hideLoading();
+        util.log("deleteChildPhoto delete success");
+        util.log(res);
+        if (res.statusCode == 200 && res.data.code == 20000) {
+          this.removePhotoById(imageId);
+          wx.showToast({
+            title: '删除成功',
+          })
+          this.setData({
+            showPhotoPreview: false
+          })
+        } else {
+          wx.showModal({
+            title: '删除失败',
+            content: JSON.stringify(res.data.message),
+          })
+        }
+      },
+      fail: (err) => {
+        util.log("deleteChildPhoto delete fail");
+        util.log(err);
+        wx.showModal({
+          title: '删除失败',
+          content: JSON.stringify(err),
+        })
+      },
+    })
   },
 })

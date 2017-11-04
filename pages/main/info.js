@@ -8,6 +8,10 @@ Page({
    * 页面的初始数据
    */
   data: {
+    showPhotoPreview: false,
+    currentPhotoPreviewItem: {},
+    currentPhotoPreviewItemWidth: '320px',
+    currentPhotoPreviewItemHeight: '240px',
     userAvatar: '/pages/images/default-avatar.png',
     userName: '请设置昵称',
     showSign: true,
@@ -134,8 +138,25 @@ Page({
     let aliyunPolicy = app.globalData.aliyunPolicy;
     let openId = app.globalData.openId;
     let token = app.globalData.token;
+    let count = 9;
+    let child = this.getChildById(childId);
+    let leftCount = 25;
+    if (child && child.templates) {
+      leftCount = 25 - child.templates.length;
+    }
+    if (leftCount <= 0) {
+      wx.showModal({
+        title: '数量限制',
+        content: '最多只能添加25个模版，请先删除旧模版',
+      })
+      return;
+    } else if (leftCount < count) {
+      count = leftCount;
+    }
+    console.log(child);
     util.log(childId);
-    util.uploadTemplateToAliyun("http://www.lucid.ac.uk/media/1436/baby-pointing-cropped.jpg?width=740&height=550&mode=crop&quality=75",
+    util.uploadTemplateToAliyun(
+      count,
       aliyunPolicy,
       openId,
       token,
@@ -143,31 +164,28 @@ Page({
       (res) => {
         util.log("info uploadTemplateToAliyun success");
         util.log(res);
-        if(res.code === 20000)
-        {
-          let data =res.data;
-          console.log(data);
-          this.setData({
-            uploadCallbackInfo: data
-          })
+        if (res.count > 0) {
           this.refreshAccountInfo();
-        }else{
-          wx.showModal({
-            title: '上传失败',
-            content: res.message,
-          })
         }
-      }, (err)=> {
-        this.setData({
-          uploadCallbackInfo: JSON.stringify(err)
+        wx.showModal({
+          title: '',
+          content: res.message,
         })
-        util.log("uploadTemplateToAliyun fail");
-        util.log(err);
       }
     )
   },
+  getChildById(id) {
+    if (this.data.children) {
+      for (let i = 0; i < this.data.children.length; i++) {
+        if (this.data.children[i].childId === id) {
+          return this.data.children[i];
+        }
+      }
+    }
+    return null;
+  },
 
-  refreshAccountInfo: () => {
+  refreshAccountInfo: function () {
     let url = api.getParentInfo + '?openId=' + app.globalData.openId;
     wx.request({
       url: url,
@@ -184,9 +202,9 @@ Page({
         this.setData({
           children: app.globalData.children
         })
-        
+
       },
-      fail: function (err) {
+      fail: (err) => {
         util.log("refreshAccountInfo fail");
         util.log(err);
       },
@@ -214,5 +232,68 @@ Page({
         showSign: false
       })
     }, 1000)
-  }
+  },
+
+
+  onTapPreivewLayout: function () {
+    this.setData({
+      showPhotoPreview: false,
+      currentPhotoPreviewItem: {}
+    })
+  },
+
+  onClickImageItem: function (e) {
+    let itemid = e.target.dataset.itemid;
+    let childid = e.target.dataset.childid;
+    let child;
+    let item;
+    util.log(itemid);
+    util.log(childid);
+    for (let i = 0; i < this.data.children.length; i++) {
+      if (childid === this.data.children[i].childId) {
+        child = this.data.children[i];
+      }
+    }
+    if (child) {
+      for (let j = 0; j < child.templates.length; j++) {
+        if (itemid === child.templates[j].id)
+        {
+          item = child.templates[j];
+        }
+      }
+    }
+    console.log(item);
+    let maxHeightPWidth = this.data.screenHeight * 2 / 3 / this.data.screenWidth;
+    let targetHeight = 240;
+    let targetWidth = 320;
+    this.setData({
+      showPhotoPreview: true,
+      currentPhotoPreviewItem: item,
+      currentPhotoPreviewItemWidth: targetWidth + 'px',
+      currentPhotoPreviewItemHeight: targetHeight + 'px'
+    })
+  },
+  onPreviewImageLoad: function (e) {
+    util.log("onPreviewImageLoad");
+    util.log(e.detail);
+    let maxHeightPWidth = this.data.screenHeight * 2 / 3 / this.data.screenWidth;
+    let targetHeight = 240;
+    let targetWidth = 320;
+    let heightPWidth = e.detail.height / e.detail.width;
+    if (heightPWidth > maxHeightPWidth) {
+      //height image , cut width;
+      targetHeight = this.data.screenHeight * 2 / 3;
+      targetWidth = targetHeight / heightPWidth;
+    } else {
+      //just showfullWidth;
+      targetWidth = this.data.screenWidth;
+      targetHeight = this.data.screenWidth * heightPWidth;
+    }
+    util.log("targetWidth:" + targetWidth);
+    util.log("targetHeight:" + targetHeight);
+    this.setData({
+      currentPhotoPreviewItemWidth: targetWidth + 'px',
+      currentPhotoPreviewItemHeight: targetHeight + 'px'
+    })
+  },
 })

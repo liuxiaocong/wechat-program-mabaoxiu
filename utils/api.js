@@ -10,10 +10,9 @@ let api = {
   updateParentInfo: host + '/api/parent/account/updateParentInfo',
   updateChildInfo: host + '/api/parent/account/updateChildInfo',
   getChildPhotoList: host + '/api/parent/childPhoto/getChildPhotoList',
-  deleteChildPhoto: host + '/parent/childPhoto/deleteChildPhoto',
-  updateChosenByChildPhoto: host + '/parent/childPhoto/updateChosenByChildPhoto',
-  unvoteChildPhoto: host + '/parent/photo/unvoteChildPhoto',
-  voteChildPhoto: host + '/parent/photo/voteChildPhoto',
-
+  deleteChildPhoto: host + '/api/parent/childPhoto/deleteChildPhoto',
+  updateChosenByChildPhoto: host + '/api/parent/childPhoto/updateChosenByChildPhoto',
+  unvoteChildPhoto: host + '/api/parent/photo/unvoteChildPhoto',
+  voteChildPhoto: host + '/api/parent/photo/voteChildPhoto',
 }
 module.exports = api;

@@ -23,10 +23,10 @@
     <view class='image-action-wrap'>
       <span wx:if="{{!currentPhotoPreviewItem.id}}" class="placeHolder">
       </span>
-      <image wx:if="{{currentPhotoPreviewItem.id && currentPhotoPreviewItem.chosen}}" class="favorite" bindtap='onTapUnFavorite' data-imageId='{{currentPhotoPreviewItem.id}}' src='/pages/images/unfavoritesd.png' />
-      <image wx:if="{{currentPhotoPreviewItem.id && !currentPhotoPreviewItem.chosen}}" class="unfavorite" data-imageId='{{currentPhotoPreviewItem.id}}' bindtap='onTapFavorite' src='/pages/images/favoritesd.png' />
+      <image wx:if="{{currentPhotoPreviewItem.id && currentPhotoPreviewItem.chosen}}" class="favorite" catchtap='onTapUnFavorite' data-imageId='{{currentPhotoPreviewItem.id}}' src='/pages/images/favoritesd.png' />
+      <image wx:if="{{currentPhotoPreviewItem.id && !currentPhotoPreviewItem.chosen}}" class="unfavorite" data-imageId='{{currentPhotoPreviewItem.id}}' catchtap='onTapFavorite' src='/pages/images/unfavoritesd.png' />
       <span class="cancel">取消</span>
-      <image class="delete" bindtap='onTapDelete' data-imageId='{{currentPhotoPreviewItem.id}}' src='/pages/images/delete.png' />
+      <image class="delete" catchtap='onTapDelete' data-imageId='{{currentPhotoPreviewItem.id}}' src='/pages/images/delete.png' />
     </view>
   </view>
 </view>

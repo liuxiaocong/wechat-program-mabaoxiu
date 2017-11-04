@@ -44,55 +44,93 @@ const saveImageToPhotosAlbum = (url, successCallback, failCallback) => {
   })
 }
 
-const uploadTemplateToAliyun = (
-  url, aliyunPolicy, openId, token, childId, successCallback, failCallback
+const uploadTemplateToAliyun = (count,aliyunPolicy, openId, token, childId, completeCallback
   ) => {
   console.log(aliyunPolicy);
+  let uploadObj = {
+    total : count,
+    success: 0 ,
+    fail: 0
+  }
   wx.chooseImage({
+    count:count,
     success: function (res) {
-      let path = res.tempFilePaths[0];
-      let uuid = genUUID();
-      let data = {
-        'key': aliyunPolicy.directory + '/' + uuid,
-        'callback': aliyunPolicy.callback,
-        'policy': aliyunPolicy.policy,
-        'OSSAccessKeyId': aliyunPolicy.accessid,
-        'Signature': aliyunPolicy.signature,
-        'x:filename': "test.jpg",
-        'x:ctime': (new Date().getTime()),
-        'x:openId': openId,
-        'x:token': token,
-        'x:childid': childId
-      };
-      console.log(data);
-      successCallback(aliyunPolicy.host);
-      wx.uploadFile({
-        url: aliyunPolicy.host,
-        filePath: path,
-        name: 'file',
-        formData: data,
-        success: function (res) {
-          log("util uploadFile success");
-          console.log(res);
-          if (res.statusCode === 200) {
-            let resJson = JSON.parse(res.data);
-            successCallback(resJson);
-            return;
-          }
-          failCallback(res);
-        },
-        fail: function (err) {
-          wx.showToast({
-            title: 'ufail',
-          });
-          console.log(err);
-          failCallback(err);
-        },
-      })
+      uploadObj.total = res.tempFilePaths.length;
+      console.log(uploadObj);
+      if (res.tempFilePaths && res.tempFilePaths.length>0)
+      {
+        wx.showLoading({
+          title: '上传中...',
+        });
+        for (let i = 0; i < res.tempFilePaths.length;i++)
+        {
+          let path = res.tempFilePaths[i];
+          let fileType = path.substr(path.lastIndexOf('.'));
+          let fileName = childId + '' + (new Date().getTime()) + fileType;
+          let uuid = genUUID();
+          let data = {
+            'key': aliyunPolicy.directory + '/' + uuid,
+            'callback': aliyunPolicy.callback,
+            'policy': aliyunPolicy.policy,
+            'OSSAccessKeyId': aliyunPolicy.accessid,
+            'Signature': aliyunPolicy.signature,
+            'x:filename': fileName,
+            'x:ctime': (new Date().getTime()),
+            'x:openId': openId,
+            'x:token': token,
+            'x:childid': childId
+          };
+          wx.uploadFile({
+            url: aliyunPolicy.host,
+            filePath: path,
+            name: 'file',
+            formData: data,
+            success: function (res) {
+              if (res.statusCode === 200) {
+                uploadObj.success += 1;
+              }else{
+                uploadObj.fail+= 1;
+              }
+              console.log(JSON.stringify(uploadObj));
+              if (uploadObj.total === (uploadObj.success + uploadObj.fail))
+              {
+                let message = "成功上传 " + uploadObj.success + " 张照片";
+                if(uploadObj === 0)
+                {
+                  message = "上传失败，请稍后重试";
+                }
+                wx.hideLoading();
+                completeCallback({
+                  message:message,
+                  count:uploadObj.success
+                })
+              }
+            },
+            fail: function (err) {
+              uploadObj.fail += 1;
+              console.log(JSON.stringify(uploadObj));
+              if (uploadObj.total === (uploadObj.success + uploadObj.fail)) {
+                let message = "成功上传 " + uploadObj.success + " 张照片";
+                if (uploadObj === 0) {
+                  message = "上传失败，请稍后重试";
+                }
+                wx.hideLoading();
+                completeCallback({
+                  message: message,
+                  count: uploadObj.success
+                })
+              }
+            },
+          })
+        }
+      }
     },
     fail: (err) => {
-      log("download success fail");
-      failCallback(err);
+      log("choose image fail");
+      wx.showModal({
+        title: '选取失败',
+        content: '选取图片失败',
+      })
     }
   })
 }
