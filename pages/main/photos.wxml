@@ -19,7 +19,9 @@
 </view>
 <view wx:if="{{showPhotoPreview}}" bindtap='onTapPreivewLayout' class='image-view-wrap'>
   <view class='image-view-inner-wrap'>
-    <image class="loading-background image-view-avatar" src="{{currentPhotoPreviewItem.src}}" bindload="onPreviewImageLoad" mode='aspectFit' style='width:{{currentPhotoPreviewItemWidth}};height:{{currentPhotoPreviewItemHeight}}' />
+    <view class='image-wrap'>
+      <image class="loading-background image-view-avatar" src="{{currentPhotoPreviewItem.src}}" bindload="onPreviewImageLoad" mode='aspectFit' style='width:{{currentPhotoPreviewItemWidth}};height:{{currentPhotoPreviewItemHeight}};margin-top:{{currentPhotoPreviewItemMarginTop}}' />
+    </view>
     <view class='image-action-wrap'>
       <span wx:if="{{!currentPhotoPreviewItem.id}}" class="placeHolder">
       </span>

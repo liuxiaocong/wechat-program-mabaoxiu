@@ -113,8 +113,11 @@ Page({
         util.log(JSON.stringify(res));
         app.globalData.accountInfo = res.data.data;
         app.globalData.children = res.data.data.children;
+        // wx.switchTab({
+        //   url: '/pages/main/info'
+        // })
         wx.switchTab({
-          url: '/pages/main/info'
+          url: '/pages/main/favorite'
         })
       },
       fail: function (err) {
@@ -126,9 +129,6 @@ Page({
         })
       },
     })
-    // wx.switchTab({
-    //   url: '/pages/main/info'
-    // })
   },
 
   getAliyunPolicy: ()=> {
@@ -144,8 +144,11 @@ Page({
         util.log("getAliyunPolicy success");
         util.log(res);
         app.globalData.aliyunPolicy = res.data.data;
+        // wx.switchTab({
+        //   url: '/pages/main/info'
+        // })
         wx.switchTab({
-          url: '/pages/main/info'
+          url: '/pages/main/favorite'
         })
       },
       fail: function (err) {
@@ -185,9 +188,6 @@ Page({
           this.getAccountInfo();
           this.getAliyunPolicy();
         } else {
-          // wx.switchTab({
-          //   url: '/pages/main/info'
-          // })
           wx.redirectTo({
             url: '/pages/index/index'
           })
@@ -202,18 +202,5 @@ Page({
         })
       },
     })
-    // let time = 1000;
-    // if (app.globalData.isDebug)
-    // {
-    //   time = 0;
-    // }
-    // setTimeout(function () {
-    //   wx.switchTab({
-    //     url: '/pages/main/info'
-    //   })
-    //   // wx.redirectTo({
-    //   //   url: '/pages/index/index'
-    //   // })
-    // }, time);
   }
 })

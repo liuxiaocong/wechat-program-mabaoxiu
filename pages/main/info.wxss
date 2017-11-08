@@ -233,6 +233,7 @@
   max-width: 100%;
   max-height: 800rpx;
   width: 320px;
+  margin-top: 30rpx;
 }
 .image-view-inner-wrap {
   background: #fff;

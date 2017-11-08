@@ -10,7 +10,39 @@
     "pages/setName/setName",
     "pages/setBaby/setBaby",
     "pages/main/photoSquare",
-    "pages/main/favorite"
+    "pages/main/favorite",
+    "example/index",
+
+    "example/button/button",
+    "example/list/list",
+    "example/input/input",
+    "example/slider/slider",
+    "example/uploader/uploader",
+
+    "example/article/article",
+    "example/badge/badge",
+    "example/flex/flex",
+    "example/footer/footer",
+    "example/gallery/gallery",
+    "example/grid/grid",
+    "example/icons/icons",
+    "example/loadmore/loadmore",
+    "example/panel/panel",
+    "example/preview/preview",
+    "example/progress/progress",
+
+    "example/actionsheet/actionsheet",
+    "example/dialog/dialog",
+    "example/msg/msg",
+    "example/msg/msg_success",
+    "example/msg/msg_fail",
+    "example/picker/picker",
+    "example/toast/toast",
+
+    "example/navbar/navbar",
+    "example/tabbar/tabbar",
+
+    "example/searchbar/searchbar"
   ],
   "tabBar": {
     "color": "#666666",
@@ -26,6 +58,12 @@
       {
         "pagePath": "pages/main/photos",
         "text": "宝宝照片",
+        "iconPath": "pages/images/icon-photo.png",
+        "selectedIconPath": "pages/images/icon-photo-press.png"
+      },
+      {
+        "pagePath": "pages/main/favorite",
+        "text": "精选",
         "iconPath": "pages/images/icon-photo.png",
         "selectedIconPath": "pages/images/icon-photo-press.png"
       }

@@ -17,6 +17,7 @@ Page({
     focusChildId: 1,
     currentPhotoPreviewItemWidth: '320px',
     currentPhotoPreviewItemHeight: '240px',
+    currentPhotoPreviewItemMarginTop: '30px',
     screenWidth: null,
     screenHeight: null,
     defaultAvatar: "/pages/images/baby-default.jpg",
@@ -205,7 +206,8 @@ Page({
     })
     let data = {
       "childId": childId,
-      "photoId": imageId
+      "photoId": imageId,
+      "id": imageId
     }
     wx.request({
       url: url,
@@ -255,8 +257,7 @@ Page({
         }
       }
     }
-    if(index>=0)
-    {
+    if (index >= 0) {
       this.data.currentImageItems.splice(index, 1);
       this.setData({
         currentImageItems: this.data.currentImageItems
@@ -298,7 +299,8 @@ Page({
     })
     let data = {
       "childId": childId,
-      "photoId": imageId
+      "photoId": imageId,
+      "id": imageId
     }
     wx.request({
       url: url,
@@ -343,24 +345,30 @@ Page({
   onPreviewImageLoad: function (e) {
     util.log("onPreviewImageLoad");
     util.log(e.detail);
-    let maxHeightPWidth = this.data.screenHeight * 2 / 3 / this.data.screenWidth;
+    let maxHeightPWidth = this.data.screenHeight * 3 / 4 / this.data.screenWidth;
     let targetHeight = 240;
     let targetWidth = 320;
     let heightPWidth = e.detail.height / e.detail.width;
     if (heightPWidth > maxHeightPWidth) {
       //height image , cut width;
-      targetHeight = this.data.screenHeight * 2 / 3;
+      targetHeight = this.data.screenHeight * 3 / 4;
       targetWidth = targetHeight / heightPWidth;
     } else {
       //just showfullWidth;
       targetWidth = this.data.screenWidth;
       targetHeight = this.data.screenWidth * heightPWidth;
     }
+    let targetMarginTop = (this.data.screenHeight - targetHeight) / 4;
+
+    util.log("screenWidth:" + this.data.screenWidth);
+    util.log("screenHeight:" + this.data.screenHeight);
     util.log("targetWidth:" + targetWidth);
     util.log("targetHeight:" + targetHeight);
+    util.log("targetMarginTop:" + targetMarginTop);
     this.setData({
       currentPhotoPreviewItemWidth: targetWidth + 'px',
-      currentPhotoPreviewItemHeight: targetHeight + 'px'
+      currentPhotoPreviewItemHeight: targetHeight + 'px',
+      currentPhotoPreviewItemMarginTop: targetMarginTop + 'px'
     })
   },
 
@@ -376,7 +384,8 @@ Page({
     })
     let data = {
       "childId": childId,
-      "photoId": imageId
+      "photoId": imageId,
+      "id": imageId
     }
     wx.showLoading({
       title: '删除中..',

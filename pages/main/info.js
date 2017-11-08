@@ -23,7 +23,16 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    wx.getSystemInfo({
+      success: (res) => {
+        util.log(res);
+        let height = (res.screenWidth - 18) / 3;
+        this.setData({ imageHeight: height + 'px', screenWidth: res.screenWidth, screenHeight: res.screenHeight });
+      },
+      fail: function (err) {
 
+      }
+    })
   },
 
   /**
@@ -170,6 +179,7 @@ Page({
         wx.showModal({
           title: '',
           content: res.message,
+          showCancel: false
         })
       }
     )
@@ -256,8 +266,7 @@ Page({
     }
     if (child) {
       for (let j = 0; j < child.templates.length; j++) {
-        if (itemid === child.templates[j].id)
-        {
+        if (itemid === child.templates[j].id) {
           item = child.templates[j];
         }
       }

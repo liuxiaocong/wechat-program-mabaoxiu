@@ -59,8 +59,10 @@ const uploadTemplateToAliyun = (count,aliyunPolicy, openId, token, childId, comp
       console.log(uploadObj);
       if (res.tempFilePaths && res.tempFilePaths.length>0)
       {
-        wx.showLoading({
+        wx.showToast({
           title: '上传中...',
+          icon: 'loading',
+          duration: 200000
         });
         for (let i = 0; i < res.tempFilePaths.length;i++)
         {
@@ -99,7 +101,7 @@ const uploadTemplateToAliyun = (count,aliyunPolicy, openId, token, childId, comp
                 {
                   message = "上传失败，请稍后重试";
                 }
-                wx.hideLoading();
+                wx.hideToast();
                 completeCallback({
                   message:message,
                   count:uploadObj.success
@@ -114,7 +116,7 @@ const uploadTemplateToAliyun = (count,aliyunPolicy, openId, token, childId, comp
                 if (uploadObj === 0) {
                   message = "上传失败，请稍后重试";
                 }
-                wx.hideLoading();
+                wx.hideToast();
                 completeCallback({
                   message: message,
                   count: uploadObj.success
@@ -127,10 +129,7 @@ const uploadTemplateToAliyun = (count,aliyunPolicy, openId, token, childId, comp
     },
     fail: (err) => {
       log("choose image fail");
-      wx.showModal({
-        title: '选取失败',
-        content: '选取图片失败',
-      })
+     
     }
   })
 }
@@ -143,9 +142,25 @@ const genUUID = () => {
   return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
 }
 
+
+const getDisplayDate = time => {
+  let t = new Date(time);
+  let year = t.getFullYear();
+  let month = t.getMonth() + 1;
+  if (month < 10) {
+    month = '0' + month;
+  }
+  let date = t.getDate();
+  if (date < 10) {
+    date = '0' + date;
+  }
+  return year + '年' + month + '月' + date + '日';
+}
+
 module.exports = {
   formatTime: formatTime,
   log: log,
   saveImageToPhotosAlbum: saveImageToPhotosAlbum,
-  uploadTemplateToAliyun: uploadTemplateToAliyun
+  uploadTemplateToAliyun: uploadTemplateToAliyun,
+  getDisplayDate: getDisplayDate
 }
