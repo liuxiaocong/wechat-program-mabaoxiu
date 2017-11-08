@@ -37,14 +37,14 @@
         </view>
         <view class="comment-wrap" wx:if='{{!!(imageItem.openComment)}}'>
           <view class="add-comment">
-            <input placeholder="" class='input-comment' data-imageid='{{imageItem.id}}' bindinput='onCommentChange' />
+            <input placeholder="" class='input-comment' value='{{imageItem.pendingComment}}' data-imageid='{{imageItem.id}}' bindinput='onCommentChange' />
             <button class='submit-comment' data-imageid='{{imageItem.id}}' catchtap='onTapSubmitComment'>发布</button>
           </view>
           <view class="comment-list-wrap">
             <view class="image-comment-item-wrap" wx:for="{{imageItem.comments}}" wx:for-index="idx" wx:for-item="comment" wx:key="*this">
               <view class='image-comment-item-content-wrap'>
                 <view class="image-comment-item-content">{{comment.content}}</view>
-                <button class="image-comment-item-delete">删除</button>
+                <button data-commentid='{{comment.id}}' data-imageid='{{imageItem.id}}'  catchtap='onTapDeleteComment' class="image-comment-item-delete">删除</button>
               </view>
             </view>
           </view>

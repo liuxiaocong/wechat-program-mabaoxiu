@@ -287,7 +287,7 @@ Page({
             icon: 'success'
           })
           let data = res.data.data;
-          this.addCommentToPhoto(data,imageId);
+          this.addCommentToPhoto(data, imageId);
         } else {
           wx.showModal({
             title: '评论失败',
@@ -307,17 +307,17 @@ Page({
     })
   },
 
-  addCommentToPhoto:function(comment,imageId){
+  addCommentToPhoto: function (comment, imageId) {
     util.log("addCommentToPhoto");
     util.log(comment);
     util.log(imageId);
     if (this.data.currentImageItems && this.data.currentImageItems.length > 0) {
       for (let i = 0; i < this.data.currentImageItems.length; i++) {
         if (this.data.currentImageItems[i].id === imageId) {
-          if (!this.data.currentImageItems[i].comments)
-          {
+          this.data.currentImageItems[i].pendingComment = '';
+          if (!this.data.currentImageItems[i].comments) {
             this.data.currentImageItems[i].comments = [].push(comment);
-          }else{
+          } else {
             this.data.currentImageItems[i].comments.push(comment);
           }
           this.setData({
@@ -326,6 +326,81 @@ Page({
           return;
         }
       }
+    }
+  },
+
+  onTapDeleteComment: function (e) {
+    let commentid = e.currentTarget.dataset.commentid;
+    let imageid = e.currentTarget.dataset.imageid;
+    util.log("comment id:" + commentid);
+    util.log("imageid id:" + imageid);
+    let url = api.deleteChildPhotoComment;
+    let data = {
+      "id": commentid,
+    }
+    console.log(data);
+    wx.showToast({
+      title: '删除中...',
+      icon: 'loading',
+      duration: 200000
+    });
+    wx.request({
+      url: url,
+      method: 'POST',
+      header: {
+        'content-type': 'application/json',
+        'Authorization': app.globalData.token
+      },
+      data: data,
+      success: (res) => {
+        util.log("deleteChildPhotoComment  success");
+        util.log(res);
+        wx.hideToast();
+        if (res.statusCode == 200 && res.data.code == 20000) {
+          wx.showToast({
+            title: '删除成功',
+            icon: 'success'
+          })
+          this.deleteComment(imageid, commentid);
+        } else {
+          wx.showModal({
+            title: '删除失败',
+            content: JSON.stringify(res.data.message),
+          })
+        }
+      },
+      fail: (err) => {
+        wx.hideToast();
+        util.log("deleteChildPhotoComment fail");
+        util.log(err);
+        wx.showModal({
+          title: '删除失败',
+          content: JSON.stringify(err),
+        })
+      },
+    })
+  },
+  deleteComment: function (imageId, commentid) {
+    if (this.data.currentImageItems && this.data.currentImageItems.length > 0) {
+      for (let i = 0; i < this.data.currentImageItems.length; i++) {
+        if (this.data.currentImageItems[i].id === imageId) {
+          let comments = this.data.currentImageItems[i].comments;
+          if (comments) {
+            let target = -1;
+            for (let j = 0; j < comments.length; j++) {
+              if (comments[j].id === commentid) {
+                target = j;
+              }
+            }
+            if (target > 0) {
+                this.data.currentImageItems[i].comments.splice(target, 1);
+            }
+          }
+        }
+      }
+      this.setData({
+        currentImageItems: this.data.currentImageItems
+      })
     }
   }
 })
