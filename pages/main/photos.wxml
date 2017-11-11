@@ -10,8 +10,11 @@
   <scroll-view scroll-y>
     <view class="image-item-list-wrap">
       <view class="image-item-wrap" hover-class="image-item-wrap-hover" wx:for="{{currentImageItems}}" wx:for-index="idx" wx:for-item="imageItem" wx:key="*this">
-        <view class='image-item-wrap-inner'>
+        <view wx:if="{{imageItem.type === 0}}" class='image-item-wrap-inner'>
           <image data-itemid='{{imageItem.id}}' bindtap='onClickImageItem' class="image-item-image" src="{{imageItem.src}}" style='height:{{imageHeight}}' mode='aspectFill' />
+        </view>
+        <view wx:if="{{imageItem.type === 1}}" class='image-item-wrap-inner'>
+          {{imageItem.year}}
         </view>
       </view>
     </view>

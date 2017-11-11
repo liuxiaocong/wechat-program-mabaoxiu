@@ -2,6 +2,7 @@
 const api = require('../../utils/api.js');
 const util = require('../../utils/util.js');
 const app = getApp();
+const pageSize = 50;
 Page({
 
   /**
@@ -13,7 +14,9 @@ Page({
     showNav: false,
     children: [],
     focusChildId: null,
-    currentOpenedCommentItemsId: []
+    currentOpenedCommentItemsId: [],
+    isEnd: false,
+    currentPage: 0
   },
 
   /**
@@ -23,8 +26,8 @@ Page({
 
   },
 
-  load: function (childId, page, size) {
-    let url = api.getChosenChildPhotoList + "?childId=" + childId + "&pageNo=0&pageSize=50";
+  load: function (childId, page, size, isLoadMore) {
+    let url = api.getChosenChildPhotoList + "?childId=" + childId + "&pageNo=" + page + "&pageSize=" + pageSize;
     util.log(url);
     this.setData({
       isLoading: true
@@ -40,14 +43,26 @@ Page({
         util.log("getChosenChildPhotoList success");
         if (res.statusCode == 200 && res.data.code == 20000) {
           console.log(res.data.data.results);
+          let currentImageItemsData = [];
+          if (isLoadMore) {
+            currentImageItemsData = this.data.currentImageItems;
+          }
           if (res.data.data.results) {
             for (let i = 0; i < res.data.data.results.length; i++) {
               res.data.data.results[i].displayDate = util.getDisplayDate(res.data.data.results[i].ctime);
+              currentImageItemsData.push(res.data.data.results[i]);
             }
           }
+          let isEnd = false;
+          if (res.data.data.totalRecord <= currentImageItemsData.length) {
+            isEnd = true;
+          }
+          let newPage = page + 1;
           this.setData({
-            currentImageItems: res.data.data.results,
-            isLoading: false
+            currentImageItems: currentImageItemsData,
+            isLoading: false,
+            isEnd: isEnd,
+            currentPage: newPage,
           });
         } else {
           this.setData({
@@ -90,9 +105,10 @@ Page({
       this.setData({
         showNav: showNav,
         children: app.globalData.accountInfo.children,
-        focusChildId: child.childId
+        focusChildId: child.childId,
+        currentPage: 0,
       })
-      this.load(child.childId, 0, 50);
+      this.load(child.childId, this.data.currentPage, pageSize, false);
     }
   },
 
@@ -121,7 +137,10 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    util.log("onReachBottom:" + this.data.isEnd);
+    if (!this.data.isEnd) {
+      this.load(this.data.focusChildId, this.data.currentPage, pageSize, true);
+    }
   },
 
   /**
@@ -143,8 +162,9 @@ Page({
     }
     let childid = e.currentTarget.dataset.childid;
     util.log(childid);
-    this.load(childid, 0, 50)
-    this.setData({ focusChildId: childid });
+    this.setData({ focusChildId: childid, currentPage: 0 });
+    this.load(childid, this.data.currentPage, pageSize, false)
+
   },
 
   removeChosenPhoto: function (imageId) {
@@ -393,7 +413,7 @@ Page({
               }
             }
             if (target > 0) {
-                this.data.currentImageItems[i].comments.splice(target, 1);
+              this.data.currentImageItems[i].comments.splice(target, 1);
             }
           }
         }

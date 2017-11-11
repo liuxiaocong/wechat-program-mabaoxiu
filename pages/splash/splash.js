@@ -1,14 +1,15 @@
 // pages/splash/splash.js
 const api = require('../../utils/api.js');
 const util = require('../../utils/util.js');
-const app = getApp()
+const app = getApp();
+const defaultUrl = '/pages/main/photoSquare';
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+  
   },
 
   /**
@@ -117,7 +118,7 @@ Page({
         //   url: '/pages/main/info'
         // })
         wx.switchTab({
-          url: '/pages/main/favorite'
+          url: defaultUrl
         })
       },
       fail: function (err) {
@@ -148,7 +149,7 @@ Page({
         //   url: '/pages/main/info'
         // })
         wx.switchTab({
-          url: '/pages/main/favorite'
+          url: defaultUrl
         })
       },
       fail: function (err) {

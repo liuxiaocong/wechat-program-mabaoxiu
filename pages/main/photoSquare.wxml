@@ -1,15 +1,26 @@
 <!--pages/main/photoSquare.wxml-->
-<scroll-view scroll-y>
-  <view class='image-item-list-wrap'>
-    <view class="image-item-wrap" hover-class="image-item-wrap-hover" wx:for="{{currentImageItems}}" wx:for-index="idx" wx:for-item="imageItem" wx:key="*this">
-      <view class='image-item-wrap-inner'>
-        <image data-item='{{imageItem}}' bindtap='onClickImageItem' class="image-item-image" src="{{imageItem.url}}" style='height:{{imageHeight}}' mode='aspectFill' />
+<view class="{{isLoading?'wrap loading-background':'wrap'}}">
+  <scroll-view scroll-y>
+    <view class="image-item-list-wrap">
+      <view class="image-item-wrap" hover-class="image-item-wrap-hover" wx:for="{{currentImageItems}}" wx:for-index="idx" wx:for-item="imageItem" wx:key="*this">
+        <view class='image-item-wrap-inner'>
+          <image data-itemid='{{imageItem.id}}' bindtap='onClickImageItem' class="image-item-image" src="{{imageItem.src}}" style='height:{{imageHeight}}' mode='aspectFill' />
+        </view>
       </view>
     </view>
-  </view>
-</scroll-view>
+  </scroll-view>
+</view>
 
-<view wx:if="{{showPhotoPreview}}" bindtap='onTapPreivewLayout'  class='image-view-wrap'>
-  <image class="loading-background image-view-avatar" src="{{currentPhotoPreviewItem.url}}"
-    mode='aspectFill' />
+<view wx:if="{{showPhotoPreview}}" bindtap='onTapPreivewLayout' class='image-view-wrap'>
+  <view class='image-view-inner-wrap'>
+    <view class='image-wrap'>
+      <image class="loading-background image-view-avatar" src="{{currentPhotoPreviewItem.src}}" bindload="onPreviewImageLoad" mode='aspectFit' style='width:{{currentPhotoPreviewItemWidth}};height:{{currentPhotoPreviewItemHeight}};margin-top:{{currentPhotoPreviewItemMarginTop}}' />
+    </view>
+    <view class='image-action-wrap'>
+      <image wx:if="{{currentPhotoPreviewItem.id && currentPhotoPreviewItem.childIds.length>0}}" class="{{isFaving?'unfavorite disable':'unfavorite'}}" catchtap='onTapUnFavorite' data-imageId='{{currentPhotoPreviewItem.id}}' src='/pages/images/favoritesd.png' />
+      <image wx:if="{{currentPhotoPreviewItem.id && currentPhotoPreviewItem.childIds.length === 0}}" class="{{isFaving?'favorite disable':'favorite'}}" data-imageId='{{currentPhotoPreviewItem.id}}' catchtap='onTapFavorite' src='/pages/images/unfavoritesd.png' />
+      <span class="cancel">取消</span>
+       <span class="placeHolder"></span>
+    </view>
+  </view>
 </view>

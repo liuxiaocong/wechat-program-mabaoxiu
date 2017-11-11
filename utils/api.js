@@ -17,5 +17,7 @@ let api = {
   getChosenChildPhotoList: host + '/api/parent/chosenPhoto/getChosenChildPhotoList',
   createChildPhotoComment: host + '/api/parent/chosenPhoto/createChildPhotoComment',
   deleteChildPhotoComment: host + '/api/parent/chosenPhoto/deleteChildPhotoComment',
+  getPlazaPhotoList: host +  '/api/parent/plazaPhoto/getPlazaPhotoList',
+  addPhotoToChosen: host + '/api/parent/plazaPhoto/addPhotoToChosen',
 }
 module.exports = api;

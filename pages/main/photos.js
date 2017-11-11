@@ -2,6 +2,7 @@
 const api = require('../../utils/api.js');
 const util = require('../../utils/util.js');
 const app = getApp();
+const pageSize = 50;
 Page({
 
   /**
@@ -23,7 +24,9 @@ Page({
     defaultAvatar: "/pages/images/baby-default.jpg",
     isLoading: false,
     isFaving: false,
-    isDeleting: false
+    isDeleting: false,
+    currentPage: 0,
+    isEnd: false,
   },
 
   onTapBaby: function (e) {
@@ -32,8 +35,8 @@ Page({
     }
     let childid = e.currentTarget.dataset.childid;
     util.log(childid);
-    this.load(childid, 0, 50)
-    this.setData({ focusChildId: childid });
+    this.setData({ focusChildId: childid, currentPage: 0 });
+    this.load(childid, this.data.currentPage, pageSize, false)
   },
 
   /**
@@ -67,12 +70,13 @@ Page({
       this.setData({
         focusChildId: child.childId
       })
-      this.load(child.childId, 0, 50);
+      this.load(child.childId, this.data.currentPage, pageSize, false);
     }
   },
 
-  load: function (childId, page, size) {
-    let url = api.getChildPhotoList + "?childId=" + childId + "&pageNo=0&pageSize=50";
+  load: function (childId, page, size, isLoadMore) {
+    util.log("load:" + page + "," + size);
+    let url = api.getChildPhotoList + "?childId=" + childId + "&pageNo=" + page + "&pageSize=" + pageSize;
     util.log(url);
     this.setData({
       isLoading: true
@@ -87,10 +91,51 @@ Page({
       success: (res) => {
         util.log("getChildPhotoList success");
         if (res.statusCode == 200 && res.data.code == 20000) {
-          console.log(res.data.data.results);
+          console.log(res.data.data);
+          console.log(this.data.currentImageItemsData);
+          let currentImageItemsData = [];
+          if (isLoadMore) {
+            currentImageItemsData = this.data.currentImageItems;
+          }
+          let lastDisplayData = null;
+          if (res.data.data.results) {
+            for (let i = 0; i < res.data.data.results.length; i++) {
+              let displayDate = util.getDisplayDate(res.data.data.results[i].ctime);
+              res.data.data.results[i].displayDate = displayDate;
+              res.data.data.results[i].type = 0;
+              if (displayDate !== lastDisplayData) {
+                lastDisplayData = displayDate;
+                let t = new Date(res.data.data.results[i].ctime);
+                let year = t.getFullYear();
+                let month = t.getMonth() + 1;
+                if (month < 10) {
+                  month = '0' + month;
+                }
+                let date = t.getDate();
+                if (date < 10) {
+                  date = '0' + date;
+                }
+                let dataObject = {
+                  type: 1,
+                  year: year,
+                  month: month,
+                  date: date
+                }
+                currentImageItemsData.push(dataObject);
+              }
+              currentImageItemsData.push(res.data.data.results[i]);
+            }
+          }
+          let newPage = page + 1;
+          let isEnd = false;
+          if (res.data.data.totalRecord <= currentImageItemsData.length) {
+            isEnd = true;
+          }
           this.setData({
-            currentImageItems: res.data.data.results,
-            isLoading: false
+            currentImageItems: currentImageItemsData,
+            currentPage: newPage,
+            isLoading: false,
+            isEnd: isEnd,
           });
         } else {
           this.setData({
@@ -155,7 +200,10 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    util.log("onReachBottom:" + this.data.isEnd);
+    if (!this.data.isEnd) {
+      this.load(this.data.focusChildId, this.data.currentPage, pageSize, true);
+    }
   },
 
   /**
@@ -195,6 +243,9 @@ Page({
   },
 
   onTapFavorite: function (e) {
+    if (this.data.isFaving) {
+      return;
+    }
     let imageId = e.currentTarget.dataset.imageid;
     let childId = this.data.focusChildId;
     console.log(childId);
@@ -288,6 +339,9 @@ Page({
   },
 
   onTapUnFavorite: function (e) {
+    if (this.data.isFaving) {
+      return;
+    }
     let imageId = e.currentTarget.dataset.imageid;
     let childId = this.data.focusChildId;
     console.log(childId);

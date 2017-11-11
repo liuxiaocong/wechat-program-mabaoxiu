@@ -25,11 +25,11 @@
           </view>
           <view class='image-vote'>
             <image class="image-vote-icon" src="{{isVote?'/pages/images/liked-icon.png':'/pages/images/like-icon.png'}}"></image>
-            <text class="image-like-count">12</text>
+            <text class="image-like-count">{{imageItem.votes.length}}</text>
           </view>
           <view class="image-comment" data-imageid='{{imageItem.id}}' catchtap='onTapComment'>
             <image class="image-comment-icon" src="/pages/images/comment-icon.png" mode='aspectFit' />
-            <text class="image-comment-count">12</text>
+            <text class="image-comment-count">{{imageItem.comments.length}}</text>
           </view>
           <view class="image-delete" data-imageid='{{imageItem.id}}' bindtap='onTapUnFavorite'>
             <image class="delete-icon" src="/pages/images/delete.png" mode='aspectFit' />

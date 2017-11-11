@@ -66,6 +66,12 @@
         "text": "精选",
         "iconPath": "pages/images/icon-photo.png",
         "selectedIconPath": "pages/images/icon-photo-press.png"
+      },
+      {
+        "pagePath": "pages/main/photoSquare",
+        "text": "照片广场",
+        "iconPath": "pages/images/icon-photo.png",
+        "selectedIconPath": "pages/images/icon-photo-press.png"
       }
     ]
   },
