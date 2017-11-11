@@ -4,7 +4,7 @@
     <view class='image-item-list-wrap'>
       <view class="image-item-wrap" hover-class="image-item-wrap-hover" wx:for="{{currentImageItems}}" wx:for-index="idx" wx:for-item="imageItem" wx:key="*this">
         <view class='image-item-wrap-inner'>
-          <image data-item='{{imageItem.id}}' bindtap='onClickImageItem' class="image-item-image" src="{{imageItem.src}}" style='' mode='widthFix' />
+          <image data-imageid='{{imageItem.id}}' bindtap='onClickImageItem' class="image-item-image" src="{{imageItem.src}}" style='' mode='widthFix' />
         </view>
         <view class='image-action-wrap'>
           <view class='image-action-date'>

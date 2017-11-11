@@ -422,5 +422,22 @@ Page({
         currentImageItems: this.data.currentImageItems
       })
     }
+  },
+  onClickImageItem: function (e) {
+    let imageId = e.currentTarget.dataset.imageid;
+    let urls = [];
+    let current = null;
+    for (let i = 0; i < this.data.currentImageItems.length; i++) {
+      urls.push(this.data.currentImageItems[i].src)
+      if (imageId === this.data.currentImageItems[i].id) {
+        current = this.data.currentImageItems[i].src;
+      }
+    }
+    if (urls.length > 0 && current != null) {
+      wx.previewImage({
+        current: current, // 当前显示图片的http链接
+        urls: urls // 需要预览的图片http链接列表
+      })
+    }
   }
 })
