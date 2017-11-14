@@ -14,7 +14,11 @@
           <image data-itemid='{{imageItem.id}}' bindtap='onClickImageItem' class="image-item-image" src="{{imageItem.src}}" style='height:{{imageHeight}}' mode='aspectFill' />
         </view>
         <view wx:if="{{imageItem.type === 1}}" class='image-item-wrap-inner'>
-          {{imageItem.year}}
+          <view class='date-wrap'>
+            <view class='date-day'>{{imageItem.date}}</view>
+            <view class='date-date'>{{imageItem.monthDate}}</view>
+            <view class='date-weekday'>{{imageItem.weekday}}</view>
+          </view>
         </view>
       </view>
     </view>
@@ -23,7 +27,8 @@
 <view wx:if="{{showPhotoPreview}}" bindtap='onTapPreivewLayout' class='image-view-wrap'>
   <view class='image-view-inner-wrap'>
     <view class='image-wrap'>
-      <image class="loading-background image-view-avatar" src="{{currentPhotoPreviewItem.src}}" bindload="onPreviewImageLoad" mode='aspectFit' style='width:{{currentPhotoPreviewItemWidth}};height:{{currentPhotoPreviewItemHeight}};margin-top:{{currentPhotoPreviewItemMarginTop}}' />
+      <image class="loading-background image-view-avatar" src="{{currentPhotoPreviewItem.src}}" bindload="onPreviewImageLoad" mode='aspectFit' style='width:{{currentPhotoPreviewItemWidth}};height:{{currentPhotoPreviewItemHeight}};margin-top:{{currentPhotoPreviewItemMarginTop}}'
+      />
     </view>
     <view class='image-action-wrap'>
       <span wx:if="{{!currentPhotoPreviewItem.id}}" class="placeHolder">

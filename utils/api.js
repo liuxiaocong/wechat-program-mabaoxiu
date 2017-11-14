@@ -13,7 +13,7 @@ let api = {
   deleteChildPhoto: host + '/api/parent/childPhoto/deleteChildPhoto',
   updateChosenByChildPhoto: host + '/api/parent/childPhoto/updateChosenByChildPhoto',
   unvoteChildPhoto: host + '/api/parent/photo/unvoteChildPhoto',
-  voteChildPhoto: host + '/api/parent/photo/voteChildPhoto',
+  voteChildPhoto: host + '/api/parent/chosenPhoto/voteChildPhoto',
   getChosenChildPhotoList: host + '/api/parent/chosenPhoto/getChosenChildPhotoList',
   createChildPhotoComment: host + '/api/parent/chosenPhoto/createChildPhotoComment',
   deleteChildPhotoComment: host + '/api/parent/chosenPhoto/deleteChildPhotoComment',

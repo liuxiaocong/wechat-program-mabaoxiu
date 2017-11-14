@@ -1,0 +1,5 @@
+/* pages/main/notification.wxss */
+.webview{
+  height: 640px;
+  width: 320px;
+}

@@ -101,7 +101,9 @@ Page({
                   type: 1,
                   year: year,
                   month: month,
-                  date: date
+                  date: displayDate,
+                  monthDate: util.getDisplayMonthDate(res.data.data.results[i].ctime),
+                  weekday: util.getDisplayWeekday(res.data.data.results[i].ctime)
                 }
                 currentImageItemsData.push(dataObject);
               }

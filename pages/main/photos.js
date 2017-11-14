@@ -35,7 +35,7 @@ Page({
     }
     let childid = e.currentTarget.dataset.childid;
     util.log(childid);
-    this.setData({ focusChildId: childid, currentPage: 0 });
+    this.setData({ focusChildId: childid, currentPage: 0, currentImageItems:[],isLoading:true });
     this.load(childid, this.data.currentPage, pageSize, false)
   },
 
@@ -119,8 +119,11 @@ Page({
                   type: 1,
                   year: year,
                   month: month,
-                  date: date
+                  date: displayDate,
+                  monthDate: util.getDisplayMonthDate(res.data.data.results[i].ctime),
+                  weekday: util.getDisplayWeekday(res.data.data.results[i].ctime)
                 }
+                console.log(dataObject);
                 currentImageItemsData.push(dataObject);
               }
               currentImageItemsData.push(res.data.data.results[i]);

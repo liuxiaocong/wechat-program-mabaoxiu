@@ -16,7 +16,8 @@ Page({
     focusChildId: null,
     currentOpenedCommentItemsId: [],
     isEnd: false,
-    currentPage: 0
+    currentPage: 0,
+    currentSelectImageIds: [],
   },
 
   /**
@@ -150,10 +151,84 @@ Page({
 
   },
 
-  bindSelectAllChange: function (e) {
+  bindSelectChange: function (e) {
+    let imageId = e.currentTarget.dataset.imageid;
+    console.log(imageId);
+    if (this.data.currentSelectImageIds.indexOf(imageId) >= 0)
+    {
+      let index = -1;
+      if (this.data.currentSelectImageIds && this.data.currentSelectImageIds.length > 0) {
+        for (let i = 0; i < this.data.currentSelectImageIds.length; i++) {
+          if (this.data.currentSelectImageIds[i] === imageId) {
+            index = i;
+          }
+        }
+      }
+      if (index >= 0) {
+        this.data.currentSelectImageIds.splice(index, 1);
+      }
+    }else{
+      this.data.currentSelectImageIds.push(imageId);
+    }
+    let isSelectAll = false;
+    if (this.data.currentSelectImageIds.length === this.data.currentImageItems.length)
+    {
+      isSelectAll = true;
+    }
+    if (this.data.currentImageItems && this.data.currentImageItems.length > 0) {
+      for (let i = 0; i < this.data.currentImageItems.length; i++) {
+        let id = this.data.currentImageItems[i].id;
+        if (this.data.currentSelectImageIds.indexOf(id) >= 0)
+        {
+          this.data.currentImageItems[i].isSelect = true;
+        }else{
+          this.data.currentImageItems[i].isSelect = false;
+        }
+      }
+    }
     this.setData({
-      isSelectAll: !!e.detail.value.length
+      isSelectAll: isSelectAll,
+      currentSelectImageIds: this.data.currentSelectImageIds,
+      currentImageItems: this.data.currentImageItems
     });
+  },
+
+  bindSelectAllChange: function (e) {
+    if (this.data.isSelectAll)
+    {
+      let selectAll = false;
+      this.data.currentSelectImageIds = [];
+      if (this.data.currentImageItems && this.data.currentImageItems.length > 0) {
+        for (let i = 0; i < this.data.currentImageItems.length; i++) {
+          let id = this.data.currentImageItems[i].id;
+          if (this.data.currentSelectImageIds.indexOf(id) >= 0) {
+            this.data.currentImageItems[i].isSelect = true;
+          } else {
+            this.data.currentImageItems[i].isSelect = false;
+          }
+        }
+      }
+      this.setData({
+        isSelectAll: selectAll,
+        currentSelectImageIds: this.data.currentSelectImageIds,
+        currentImageItems: this.data.currentImageItems
+      });
+    }else{
+      let selectAll = true;
+      this.data.currentSelectImageIds = [];
+      if (this.data.currentImageItems && this.data.currentImageItems.length > 0) {
+        for (let i = 0; i < this.data.currentImageItems.length; i++) {
+          let id = this.data.currentImageItems[i].id;
+          this.data.currentImageItems[i].isSelect = true;
+          this.data.currentSelectImageIds.push(id);
+        }
+      }
+      this.setData({
+        isSelectAll: selectAll,
+        currentSelectImageIds: this.data.currentSelectImageIds,
+        currentImageItems: this.data.currentImageItems
+      });
+    }
   },
 
   onTapBaby: function (e) {
@@ -264,6 +339,46 @@ Page({
       }
     }
   },
+  onTapVote: function (e) {
+    let imageId = e.currentTarget.dataset.imageid;
+    let childId = this.data.focusChildId;
+    console.log("onTapVote imageId " + imageId);
+    let url = api.voteChildPhoto;
+    let data = {
+      "id": imageId
+    }
+    
+    wx.request({
+      url: url,
+      method: 'POST',
+      header: {
+        'content-type': 'application/json',
+        'Authorization': app.globalData.token
+      },
+      data: data,
+      success: (res) => {
+        util.log("voteChildPhoto  success");
+        util.log(res);
+        if (res.statusCode == 200 && res.data.code == 20000) {
+          let data = res.data.data;
+          this.addVoteToPhoto(imageId, childId);
+        } else {
+          wx.showModal({
+            title: '点赞失败',
+            content: '请检测网络',
+          })
+        }
+      },
+      fail: (err) => {
+        util.log("voteChildPhoto fail");
+        util.log(err);
+        wx.showModal({
+          title: '点赞失败',
+          content: '请检测网络',
+        })
+      },
+    })
+  },
 
   onTapSubmitComment: function (e) {
     let imageId = e.currentTarget.dataset.imageid;
@@ -344,6 +459,35 @@ Page({
             currentImageItems: this.data.currentImageItems
           })
           return;
+        }
+      }
+    }
+  },
+
+  addVoteToPhoto: function(imageId,childId)
+  {
+    util.log("addVoteToPhoto");
+    util.log(imageId);
+    util.log(childId);
+    let voteObj = {};
+    if (app.golbeData.accountInfo)
+    {
+      voteObj.id = app.golbeData.accountInfo.id;
+      voteObj.name = app.golbeData.accountInfo.name;
+      voteObj.avatar = app.golbeData.accountInfo.avatarUri;
+    }
+    util.log(child);
+    if (this.data.currentImageItems && this.data.currentImageItems.length > 0) {
+      for (let i = 0; i < this.data.currentImageItems.length; i++) {
+        if (this.data.currentImageItems[i].id === imageId) {
+          if (!this.data.currentImageItems[i].votes)
+          {
+            this.data.currentImageItems[i].votes = [];
+          }
+          this.data.currentImageItems[i].votes.push(voteObj);
+          this.setData({
+            currentImageItems: this.data.currentImageItems
+          })
         }
       }
     }

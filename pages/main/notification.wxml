@@ -1,0 +1,3 @@
+<!--pages/main/notification.wxml-->
+<view>1233</view>
+<web-view class='webview' src="https://www.mabaoxiu.cn"></web-view>

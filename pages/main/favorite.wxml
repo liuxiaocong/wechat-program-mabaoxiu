@@ -11,19 +11,19 @@
             {{imageItem.displayDate}}
           </view>
           <view class='image-select'>
-            <checkbox-group bindchange="bindSelectAllChange">
+            <checkbox-group data-imageid='{{imageItem.id}}' bindchange="bindSelectChange">
               <label class="image-select-all-label">
                 <view class="image-select-all-text">
-                  <checkbox class="weui-agree__checkbox" value="selectAll" checked="{{isSelectAll}}" />
+                  <checkbox class="weui-agree__checkbox" value="selectAll" checked="{{imageItem.isSelect}}" />
                   <view class="weui-agree__checkbox-icon">
-                    <icon class="weui-agree__checkbox-icon-check" type="success_no_circle" size="9" wx:if="{{isSelectAll}}"></icon>
+                    <icon class="weui-agree__checkbox-icon-check" type="success_no_circle" size="9" wx:if="{{imageItem.isSelect}}"></icon>
                   </view>
                   选择
                 </view>
               </label>
             </checkbox-group>
           </view>
-          <view class='image-vote'>
+          <view class='image-vote' data-imageid='{{imageItem.id}}' catchtap='onTapVote'>
             <image class="image-vote-icon" src="{{isVote?'/pages/images/liked-icon.png':'/pages/images/like-icon.png'}}"></image>
             <text class="image-like-count">{{imageItem.votes.length}}</text>
           </view>

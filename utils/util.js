@@ -157,10 +157,24 @@ const getDisplayDate = time => {
   return year + '年' + month + '月' + date + '日';
 }
 
+const getDisplayWeekday = time => {
+  let t = new Date(time);
+  let day = t.getDay();
+  let weekdayArray = ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
+  return weekdayArray[day];
+}
+
+const getDisplayMonthDate = time => {
+  let t = new Date(time);
+  return t.getDate();
+}
+
 module.exports = {
   formatTime: formatTime,
   log: log,
   saveImageToPhotosAlbum: saveImageToPhotosAlbum,
   uploadTemplateToAliyun: uploadTemplateToAliyun,
-  getDisplayDate: getDisplayDate
+  getDisplayDate: getDisplayDate,
+  getDisplayWeekday: getDisplayWeekday,
+  getDisplayMonthDate: getDisplayMonthDate
 }

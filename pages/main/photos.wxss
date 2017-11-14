@@ -29,7 +29,7 @@
 
 .image-item-wrap {
   width: 33%;
-  min-height: 100%;
+  display: flex;
 }
 
 .image-item-list-wrap {
@@ -38,12 +38,13 @@
 
 .image-item-wrap-inner {
   margin: 6px 3px 0 3px;
+  flex-grow: 1;
+  display: flex;
 }
 
 .image-item-image {
   width: 100%;
   display: block;
-  margin-top: 40rpx;
 }
 
 .image-view-inner-wrap {
@@ -126,4 +127,34 @@
   flex-grow: 1;
   text-align: center;
   color: #04a1e8;
+}
+
+.date-wrap{
+  display: flex;
+  background: #feba01;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.date-date{
+  width: 130rpx;
+  height: 130rpx;
+  background: #f3a622;
+}
+
+.date-day,.date-weekday{
+  font-size: 0.6em;
+  color: #fff;
+}
+
+.date-date{
+  color: #fff;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5em;
+  font-weight: bold;
+  display: flex;
+  margin: 4rpx;
 }

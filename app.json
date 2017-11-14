@@ -11,14 +11,13 @@
     "pages/setBaby/setBaby",
     "pages/main/photoSquare",
     "pages/main/favorite",
+    "pages/main/notification",
     "example/index",
-
     "example/button/button",
     "example/list/list",
     "example/input/input",
     "example/slider/slider",
     "example/uploader/uploader",
-
     "example/article/article",
     "example/badge/badge",
     "example/flex/flex",
@@ -30,7 +29,6 @@
     "example/panel/panel",
     "example/preview/preview",
     "example/progress/progress",
-
     "example/actionsheet/actionsheet",
     "example/dialog/dialog",
     "example/msg/msg",
@@ -38,10 +36,8 @@
     "example/msg/msg_fail",
     "example/picker/picker",
     "example/toast/toast",
-
     "example/navbar/navbar",
     "example/tabbar/tabbar",
-
     "example/searchbar/searchbar"
   ],
   "tabBar": {
@@ -70,6 +66,12 @@
       {
         "pagePath": "pages/main/photoSquare",
         "text": "广场",
+        "iconPath": "pages/images/icon-photo.png",
+        "selectedIconPath": "pages/images/icon-photo-press.png"
+      },
+      {
+        "pagePath": "pages/main/notification",
+        "text": "通知",
         "iconPath": "pages/images/icon-photo.png",
         "selectedIconPath": "pages/images/icon-photo-press.png"
       }
