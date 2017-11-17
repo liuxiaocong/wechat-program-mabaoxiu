@@ -71,7 +71,7 @@
         </view>
       </label>
     </checkbox-group>
-    <button class='download'>
+    <button class='download' catchtap='onTapDownload'>
       下载
     </button>
   </view>

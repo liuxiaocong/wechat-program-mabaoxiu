@@ -1,5 +1,83 @@
 /* pages/main/notification.wxss */
-.webview{
-  height: 640px;
-  width: 320px;
+
+.wrap {
+  min-height: 100%;
+  background-size: 280rpx 200rpx;
+  background: #f0eff5;
+}
+
+.note-item-list-wrap {
+}
+
+.note-item-wrap {
+}
+
+.note-item-wrap-hover {
+  opacity: 0.8;
+}
+
+.note-item-wrap-inner {
+  display: flex;
+  flex-direction: row;
+  padding: 20rpx 30rpx;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  margin-top: 20rpx;
+}
+
+.note-item-date-wrap {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.note-item-date {
+  font-size: 0.7em;
+  color: #abadbb
+}
+
+.note-item-day {
+  font-weight: bold;
+  font-size: 1.3em;
+  color: #000;
+}
+
+.note-item-info {
+  flex-grow: 1;
+}
+
+.note-title {
+  color: #2c2c30;
+  font-size: 1em;
+}
+
+.note-sub-title {
+}
+
+.note-item-spider{
+ margin-right: 30rpx;
+ margin-left: 30rpx;
+ width: 1px;
+ background: #e2e2e2;
+ height: 100rpx;
+}
+
+.note-see-more{
+  margin-top: 20rpx;
+  color: #ec2c7a;
+  font-weight: bold;
+  font-size: 0.8em;
+}
+
+.note-item-type-icon {
+}
+
+.note-item-cover {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 30rpx;
+  border:1px solid #ddd;
 }

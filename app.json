@@ -38,7 +38,8 @@
     "example/toast/toast",
     "example/navbar/navbar",
     "example/tabbar/tabbar",
-    "example/searchbar/searchbar"
+    "example/searchbar/searchbar",
+    "pages/webview"
   ],
   "tabBar": {
     "color": "#666666",
@@ -79,7 +80,7 @@
   },
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#f0eff5",
+    "navigationBarBackgroundColor": "#ffffff",
     "navigationBarTitleText": "妈宝秀",
     "navigationBarTextStyle": "black"
   }

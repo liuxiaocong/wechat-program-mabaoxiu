@@ -2,7 +2,7 @@
 const api = require('../../utils/api.js');
 const util = require('../../utils/util.js');
 const app = getApp();
-const defaultUrl = '/pages/main/favorite';
+const defaultUrl = '/pages/main/notification';
 Page({
 
   /**

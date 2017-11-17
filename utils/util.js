@@ -44,28 +44,28 @@ const saveImageToPhotosAlbum = (url, successCallback, failCallback) => {
   })
 }
 
-const uploadTemplateToAliyun = (count,aliyunPolicy, openId, token, childId, completeCallback
-  ) => {
+const uploadTemplateToAliyun = (
+  count, aliyunPolicy, openId,
+  token, childId, completeCallback
+) => {
   console.log(aliyunPolicy);
   let uploadObj = {
-    total : count,
-    success: 0 ,
+    total: count,
+    success: 0,
     fail: 0
   }
   wx.chooseImage({
-    count:count,
+    count: count,
     success: function (res) {
       uploadObj.total = res.tempFilePaths.length;
       console.log(uploadObj);
-      if (res.tempFilePaths && res.tempFilePaths.length>0)
-      {
+      if (res.tempFilePaths && res.tempFilePaths.length > 0) {
         wx.showToast({
           title: '上传中...',
           icon: 'loading',
           duration: 200000
         });
-        for (let i = 0; i < res.tempFilePaths.length;i++)
-        {
+        for (let i = 0; i < res.tempFilePaths.length; i++) {
           let path = res.tempFilePaths[i];
           let fileType = path.substr(path.lastIndexOf('.'));
           let fileName = childId + '' + (new Date().getTime()) + fileType;
@@ -90,21 +90,19 @@ const uploadTemplateToAliyun = (count,aliyunPolicy, openId, token, childId, comp
             success: function (res) {
               if (res.statusCode === 200) {
                 uploadObj.success += 1;
-              }else{
-                uploadObj.fail+= 1;
+              } else {
+                uploadObj.fail += 1;
               }
               console.log(JSON.stringify(uploadObj));
-              if (uploadObj.total === (uploadObj.success + uploadObj.fail))
-              {
+              if (uploadObj.total === (uploadObj.success + uploadObj.fail)) {
                 let message = "成功上传 " + uploadObj.success + " 张照片";
-                if(uploadObj === 0)
-                {
+                if (uploadObj.success === 0) {
                   message = "上传失败，请稍后重试";
                 }
                 wx.hideToast();
                 completeCallback({
-                  message:message,
-                  count:uploadObj.success
+                  message: message,
+                  count: uploadObj.success
                 })
               }
             },
@@ -113,7 +111,7 @@ const uploadTemplateToAliyun = (count,aliyunPolicy, openId, token, childId, comp
               console.log(JSON.stringify(uploadObj));
               if (uploadObj.total === (uploadObj.success + uploadObj.fail)) {
                 let message = "成功上传 " + uploadObj.success + " 张照片";
-                if (uploadObj === 0) {
+                if (uploadObj.success === 0) {
                   message = "上传失败，请稍后重试";
                 }
                 wx.hideToast();
@@ -129,7 +127,7 @@ const uploadTemplateToAliyun = (count,aliyunPolicy, openId, token, childId, comp
     },
     fail: (err) => {
       log("choose image fail");
-     
+
     }
   })
 }
@@ -157,6 +155,20 @@ const getDisplayDate = time => {
   return year + '年' + month + '月' + date + '日';
 }
 
+const getYearMonthDisplayDate = time => {
+  let t = new Date(time);
+  let year = t.getFullYear();
+  let month = t.getMonth() + 1;
+  if (month < 10) {
+    month = '0' + month;
+  }
+  let date = t.getDate();
+  if (date < 10) {
+    date = '0' + date;
+  }
+  return year + '年' + month + '月';
+}
+
 const getDisplayWeekday = time => {
   let t = new Date(time);
   let day = t.getDay();
@@ -169,6 +181,61 @@ const getDisplayMonthDate = time => {
   return t.getDate();
 }
 
+
+const downloadImageToPhotosAlbum = (urls, completeCallback) => {
+  let downloadObj = {
+    total: urls.length,
+    success: 0,
+    fail: 0
+  }
+  wx.showToast({
+    title: '下载中...',
+    icon: 'loading',
+    duration: 200000
+  })
+  for (let i = 0; i < urls.length; i++) {
+    let url = urls[i];
+    wx.downloadFile({
+      url: url,
+      success: function (res) {
+        log(res);
+        if (res.statusCode === 200) {
+          downloadObj.success += 1;
+        } else {
+          downloadObj.fail += 1;
+        }
+        console.log(JSON.stringify(downloadObj));
+        if (downloadObj.total === (downloadObj.success + downloadObj.fail)) {
+          let message = "成功下载 " + downloadObj.success + " 张照片";
+          if (downloadObj.success === 0) {
+            message = "下载失败，请稍后重试";
+          }
+          wx.hideToast();
+          completeCallback({
+            message: message,
+            count: downloadObj.success
+          })
+        }
+      },
+      fail: function (err) {
+        downloadObj.fail += 1;
+        console.log(JSON.stringify(downloadObj));
+        if (downloadObj.total === (downloadObj.success + downloadObj.fail)) {
+          let message = "成功上传 " + downloadObj.success + " 张照片";
+          if (downloadObj.success === 0) {
+            message = "上传失败，请稍后重试";
+          }
+          wx.hideToast();
+          completeCallback({
+            message: message,
+            count: downloadObj.success
+          })
+        }
+      },
+    })
+  }
+}
+
 module.exports = {
   formatTime: formatTime,
   log: log,
@@ -176,5 +243,7 @@ module.exports = {
   uploadTemplateToAliyun: uploadTemplateToAliyun,
   getDisplayDate: getDisplayDate,
   getDisplayWeekday: getDisplayWeekday,
-  getDisplayMonthDate: getDisplayMonthDate
+  getDisplayMonthDate: getDisplayMonthDate,
+  downloadImageToPhotosAlbum: downloadImageToPhotosAlbum,
+  getYearMonthDisplayDate: getYearMonthDisplayDate
 }

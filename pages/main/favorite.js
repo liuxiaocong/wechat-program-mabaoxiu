@@ -583,5 +583,31 @@ Page({
         urls: urls // 需要预览的图片http链接列表
       })
     }
+  },
+
+  onTapDownload:function(e)
+  {
+    if (this.data.currentSelectImageIds && this.data.currentSelectImageIds.length > 0 
+    && this.data.currentImageItems && this.data.currentImageItems.length > 0)
+    {
+      let downloadUrls = [];
+      for (let i = 0; i < this.data.currentImageItems.length ; i++)
+      {
+        let id = this.data.currentImageItems[i].id;
+        if (this.data.currentSelectImageIds.indexOf(id)>=0)
+        {
+          downloadUrls.push(this.data.currentImageItems[i].src);
+        }
+      }
+      util.log("onTapDownload");
+      util.log(downloadUrls);
+      util.downloadImageToPhotosAlbum(downloadUrls, (res) => {
+        util.log("downloadImageToPhotosAlbum success");
+        util.log(res);
+        wx.showToast({
+          title: res.message,
+        })
+      });
+    }
   }
 })
