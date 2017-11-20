@@ -237,7 +237,7 @@ Page({
     }
     let childid = e.currentTarget.dataset.childid;
     util.log(childid);
-    this.setData({ focusChildId: childid, currentPage: 0 });
+    this.setData({ focusChildId: childid, currentPage: 0,  currentImageItems: [], isLoading: true });
     this.load(childid, this.data.currentPage, pageSize, false)
 
   },
