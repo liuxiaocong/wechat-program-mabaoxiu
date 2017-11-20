@@ -74,8 +74,8 @@ Page({
           let lastDisplayData = null;
           if (res.data.data.results) {
             for (let i = 0; i < res.data.data.results.length; i++) {
-              let displayDate = util.getYearMonthDisplayDate(res.data.data.results[i].ctime);
-              let day = util.getDisplayMonthDate(res.data.data.results[i].ctime);
+              let displayDate = util.getYearMonthDisplayDate(res.data.data.results[i].pubTime * 1000);
+              let day = util.getDisplayMonthDate(res.data.data.results[i].pubTime * 1000);
               res.data.data.results[i].displayDate = displayDate;
               res.data.data.results[i].day = day;
               if (res.data.data.results[i].subTitle) {

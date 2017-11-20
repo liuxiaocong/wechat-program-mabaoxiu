@@ -228,20 +228,79 @@ Page({
   },
 
   doSign: function () {
-    wx.showLoading({
+    wx.showToast({
       title: '签到中',
+      icon: 'loading'
     })
-    setTimeout(() => {
-      wx.hideLoading();
-      wx.showToast({
-        title: '签到成功',
-        icon: 'success',
-        duration: 1000
-      })
-      this.setData({
-        showSign: false
-      })
-    }, 1000)
+  
+    
+    wx.getLocation({
+      success: (res)=>{
+        let lat = res.latitude;
+        let lon = res.longitude;
+        this.signWithLocaltion(lat, lon);
+      },
+      fail:()=>{
+        this.signWithLocaltion(null,null);
+      }
+    })
+  },
+
+  signWithLocaltion: function(lat , lon){
+    let url = api.signIn;
+    let data = {};
+    if (lat && lon)
+    {
+      data = {
+        latitude: lat,
+        longitude: lon
+      }
+    }
+    util.log(data);
+    wx.request({
+      url: url,
+      method: 'POST',
+      data: data,
+      header: {
+        'content-type': 'application/json',
+        'Authorization': app.globalData.token
+      },
+      success: (res) => {
+        util.log("signIn success");
+        util.log(res);
+        wx.hideLoading();
+        if (res.statusCode == 200 && res.data.code == 20000) {
+          wx.showToast({
+            title: res.data.message,
+            icon: 'success',
+            duration: 1000
+          })
+          this.setData({
+            showSign: false
+          })
+        } else if (res.statusCode == 200 && res.data.code == 30400) {
+          wx.showModal({
+            title: res.data.message,
+            showCancel: false
+          })
+          this.setData({
+            showSign: false
+          })
+        } else {
+          wx.showModal({
+            title: '签到失败',
+            content: '请稍后重试',
+          })
+        }
+      },
+      fail: (err) => {
+        wx.hideLoading();
+        wx.showModal({
+          title: '签到失败',
+          content: '请稍后重试',
+        })
+      },
+    })
   },
 
 

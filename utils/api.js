@@ -20,6 +20,7 @@ let api = {
   getPlazaPhotoList: host +  '/api/parent/plazaPhoto/getPlazaPhotoList',
   addPhotoToChosen: host + '/api/parent/plazaPhoto/addPhotoToChosen',
   addPhotoToChosen: host + '/api/parent/plazaPhoto/addPhotoToChosen',
-  getBulletinList: host + '/api/parent/bulletin/getBulletinList'
+  getBulletinList: host + '/api/parent/bulletin/getBulletinList',
+  signIn: host + '/api/parent/account/signIn',
 }
 module.exports = api;

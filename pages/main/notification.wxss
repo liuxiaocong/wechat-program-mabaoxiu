@@ -3,7 +3,7 @@
 .wrap {
   min-height: 100%;
   background-size: 280rpx 200rpx;
-  background: #f0eff5;
+  background-color: #f0eff5;
 }
 
 .note-item-list-wrap {
