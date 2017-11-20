@@ -1,18 +1,24 @@
 // pages/webview.js
+const api = require('../utils/api.js');
+const util = require('../utils/util.js');
+const app = getApp();
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-  
+    url:null
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-  
+    util.log(options.url);
+    this.setData({
+      url: decodeURI(options.url)
+    })
   },
 
   /**

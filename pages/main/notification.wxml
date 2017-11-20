@@ -3,7 +3,7 @@
   <scroll-view scroll-y>
     <view class="note-item-list-wrap">
       <view class="note-item-wrap" hover-class="note-item-wrap-hover" wx:for="{{currentNofications}}" wx:for-index="idx" wx:for-item="noteItem" wx:key="*this">
-        <view class='note-item-wrap-inner'>
+        <view class='note-item-wrap-inner' data-url='{{noteItem.detail}}' catchtap='onTapNotification'>
           <view class='note-item-date-wrap'>
             <view class='note-item-day'>{{noteItem.day}}</view>
             <view class='note-item-date'>{{noteItem.displayDate}}</view>

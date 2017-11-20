@@ -6,7 +6,7 @@ page {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 100rpx 0
+  margin: 60rpx 0
 }
 .name-input{
   display: inline-block;

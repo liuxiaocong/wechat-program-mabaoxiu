@@ -62,7 +62,7 @@ App({
     openId: null,
     aliyunPolicy: null,
     children: [],
-    isDebug: false
+    isDebug: false,
   },
 
   updateChildById(id,obj) {

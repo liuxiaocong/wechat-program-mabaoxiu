@@ -53,7 +53,7 @@
     {{uploadCallbackInfo}}
   </text>
 -->
-  <button bindtap='goWeui'>go weui</button> 
+  <!-- <button bindtap='goWeui'>go weui</button>  -->
 </scroll-view>
 <view class="sign-wrap">
   <image bindtap="doSign" wx:if="{{showSign}}" class="sign" src="/pages/images/sign.png" mode='aspectFit' />

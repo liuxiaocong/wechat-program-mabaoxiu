@@ -470,13 +470,12 @@ Page({
     util.log(imageId);
     util.log(childId);
     let voteObj = {};
-    if (app.golbeData.accountInfo)
+    if (app.globalData.accountInfo)
     {
-      voteObj.id = app.golbeData.accountInfo.id;
-      voteObj.name = app.golbeData.accountInfo.name;
-      voteObj.avatar = app.golbeData.accountInfo.avatarUri;
+      voteObj.id = app.globalData.accountInfo.id;
+      voteObj.name = app.globalData.accountInfo.name;
+      voteObj.avatar = app.globalData.accountInfo.avatarUri;
     }
-    util.log(child);
     if (this.data.currentImageItems && this.data.currentImageItems.length > 0) {
       for (let i = 0; i < this.data.currentImageItems.length; i++) {
         if (this.data.currentImageItems[i].id === imageId) {

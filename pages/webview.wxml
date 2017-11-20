@@ -1,3 +1,2 @@
 <!--pages/webview.wxml-->
-<text>pages/webview.wxml</text>
-<web-view class='webview' src="https://www.mabaoxiu.cn"></web-view>
+<web-view class='webview' src="{{url}}"></web-view>
