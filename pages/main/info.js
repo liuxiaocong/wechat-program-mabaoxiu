@@ -57,16 +57,23 @@ Page({
       }
       child.canAddTemplate = child.templates.length < 25;
     })
+    let userAvatar = '/pages/images/default-avatar.png';
     if (app.globalData.userInfo) {
-      this.setData({
-        userAvatar: app.globalData.userInfo.avatarUrl,
-        userName: this.getParentName(),
-        hasUserInfo: true,
-        children: children,
-        accountInfo: JSON.stringify(app.globalData.accountInfo),
-        aliyunPolicy: JSON.stringify(app.globalData.aliyunPolicy),
-      })
+      userAvatar = app.globalData.userInfo.avatarUrl;
     }
+    let showSign = true;
+    if (app.globalData.accountInfo && app.globalData.accountInfo.hasSigned) {
+      showSign = false;
+    }
+    this.setData({
+      userAvatar: userAvatar,
+      userName: this.getParentName(),
+      hasUserInfo: true,
+      children: children,
+      accountInfo: JSON.stringify(app.globalData.accountInfo),
+      aliyunPolicy: JSON.stringify(app.globalData.aliyunPolicy),
+      showSign: showSign
+    })
   },
 
   getRelationShipByType: function (relationType) {
@@ -232,25 +239,24 @@ Page({
       title: '签到中',
       icon: 'loading'
     })
-  
-    
+
+
     wx.getLocation({
-      success: (res)=>{
+      success: (res) => {
         let lat = res.latitude;
         let lon = res.longitude;
         this.signWithLocaltion(lat, lon);
       },
-      fail:()=>{
-        this.signWithLocaltion(null,null);
+      fail: () => {
+        this.signWithLocaltion(null, null);
       }
     })
   },
 
-  signWithLocaltion: function(lat , lon){
+  signWithLocaltion: function (lat, lon) {
     let url = api.signIn;
     let data = {};
-    if (lat && lon)
-    {
+    if (lat && lon) {
       data = {
         latitude: lat,
         longitude: lon
