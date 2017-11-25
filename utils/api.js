@@ -22,5 +22,6 @@ let api = {
   addPhotoToChosen: host + '/api/parent/plazaPhoto/addPhotoToChosen',
   getBulletinList: host + '/api/parent/bulletin/getBulletinList',
   signIn: host + '/api/parent/account/signIn',
+  downgradeTemplateChildPhoto: host + '/api/parent/account/downgradeTemplateChildPhoto'
 }
 module.exports = api;

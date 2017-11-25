@@ -63,7 +63,7 @@
   <view class='image-view-inner-wrap'>
     <image class="loading-background image-view-avatar" src="{{currentPhotoPreviewItem.src}}" bindload="onPreviewImageLoad" mode='aspectFit' style='width:{{currentPhotoPreviewItemWidth}};height:{{currentPhotoPreviewItemHeight}}' />
     <view class='image-action-wrap'>
-      <image class="delete" catchtap='onTapDelete' data-imageId='{{currentPhotoPreviewItem.id}}' src='/pages/images/delete.png' />
+      <image class="delete" catchtap='onTapDelete' data-imageid='{{currentPhotoPreviewItem.id}}' src='/pages/images/delete.png' />
     </view>
   </view>
 </view>

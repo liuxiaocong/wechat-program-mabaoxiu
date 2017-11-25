@@ -47,10 +47,16 @@
     "position": "bottom",
     "list": [
       {
-        "pagePath": "pages/main/info",
-        "text": "账号",
-        "iconPath": "pages/images/icon-profile.png",
-        "selectedIconPath": "pages/images/icon-profile-press.png"
+        "pagePath": "pages/main/notification",
+        "text": "通知",
+        "iconPath": "pages/images/icon-note.png",
+        "selectedIconPath": "pages/images/icon-note-press.png"
+      },
+      {
+        "pagePath": "pages/main/photoSquare",
+        "text": "广场",
+        "iconPath": "pages/images/icon-square.png",
+        "selectedIconPath": "pages/images/icon-square-press.png"
       },
       {
         "pagePath": "pages/main/photos",
@@ -61,20 +67,14 @@
       {
         "pagePath": "pages/main/favorite",
         "text": "精选",
-        "iconPath": "pages/images/icon-photo.png",
-        "selectedIconPath": "pages/images/icon-photo-press.png"
+        "iconPath": "pages/images/icon-favorite.png",
+        "selectedIconPath": "pages/images/icon-favorite-press.png"
       },
       {
-        "pagePath": "pages/main/photoSquare",
-        "text": "广场",
-        "iconPath": "pages/images/icon-photo.png",
-        "selectedIconPath": "pages/images/icon-photo-press.png"
-      },
-      {
-        "pagePath": "pages/main/notification",
-        "text": "通知",
-        "iconPath": "pages/images/icon-photo.png",
-        "selectedIconPath": "pages/images/icon-photo-press.png"
+        "pagePath": "pages/main/info",
+        "text": "账号",
+        "iconPath": "pages/images/icon-profile.png",
+        "selectedIconPath": "pages/images/icon-profile-press.png"
       }
     ]
   },

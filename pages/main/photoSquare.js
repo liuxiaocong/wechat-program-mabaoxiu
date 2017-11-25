@@ -51,6 +51,9 @@ Page({
   },
 
   init: function () {
+    this.setData({
+      currentPage:0
+    })
     this.load(this.data.currentPage, pageSize, false);
   },
 

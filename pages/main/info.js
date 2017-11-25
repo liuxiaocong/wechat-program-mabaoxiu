@@ -16,7 +16,8 @@ Page({
     userName: '请设置昵称',
     showSign: true,
     children: [],
-    defaultAvatar: "/pages/images/baby-default.jpg"
+    defaultAvatar: "/pages/images/baby-default.jpg",
+    currentPhotoPreviewItemChildId:null
   },
 
   /**
@@ -344,7 +345,8 @@ Page({
       showPhotoPreview: true,
       currentPhotoPreviewItem: item,
       currentPhotoPreviewItemWidth: targetWidth + 'px',
-      currentPhotoPreviewItemHeight: targetHeight + 'px'
+      currentPhotoPreviewItemHeight: targetHeight + 'px',
+      currentPhotoPreviewItemChildId: childid
     })
   },
   onPreviewImageLoad: function (e) {
@@ -370,4 +372,100 @@ Page({
       currentPhotoPreviewItemHeight: targetHeight + 'px'
     })
   },
+
+  deleteTemplate:function(childId,imageId){
+    util.log("deleteTemplate");
+    util.log(childId);
+    util.log(imageId);
+    if (this.data.children && this.data.children.length > 0){
+      for (let i = 0; i < this.data.children.length;i++){
+        if (this.data.children[i].childId === childId){
+          let templates = this.data.children[i].templates;
+          let target = -1;
+          for (let j = 0; j < templates.length;j++){
+            if (templates[j].id === imageId){
+              target = j;
+            }
+          }
+          util.log("target:" + target);
+          if(target>=0){
+            templates.splice(target, 1);
+          }
+          this.setData({
+            children: this.data.children
+          })
+        }
+      }
+    }
+  },
+
+  onTapDelete:function(e){
+    let imageid = e.target.dataset.imageid;
+    let childId = this.data.currentPhotoPreviewItemChildId;
+    util.log(imageid);
+    util.log(childId);
+    let child = {};
+    for (let i = 0; i < this.data.children.length; i++) {
+      if (childId === this.data.children[i].childId) {
+        child = this.data.children[i];
+      }
+    }
+    console.log(child);
+    wx.showModal({
+      title: '删除模版',
+      content: '确定要删除该模版？',
+      success:  (res)=> {
+        if (res.confirm) {
+          wx.showToast({
+            title: '删除中..',
+            icon: 'loading'
+          })
+          let url = api.downgradeTemplateChildPhoto;
+          let data = {
+            id:imageid
+          };
+          util.log(data);
+          wx.request({
+            url: url,
+            method: 'POST',
+            data: data,
+            header: {
+              'content-type': 'application/json',
+              'Authorization': app.globalData.token
+            },
+            success: (res) => {
+              util.log("downgradeTemplateChildPhoto success");
+              wx.hideToast();
+              if (res.statusCode == 200 && res.data.code == 20000) {
+                this.setData({
+                  showPhotoPreview: false,
+                  currentPhotoPreviewItem: {},
+                })
+                this.deleteTemplate(childId,imageid)
+                wx.showToast({
+                  title: '删除成功',
+                  icon: 'success',
+                  duration: 1000
+                })
+              } else {
+                wx.showModal({
+                  title: '删除失败',
+                  content: '请稍后重试',
+                })
+              }
+            },
+            fail: (err) => {
+              wx.hideToast();
+              wx.showModal({
+                title: '删除失败',
+                content: '请稍后重试',
+              })
+            },
+          })
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
+    })
+  }
 })
