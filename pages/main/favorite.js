@@ -100,7 +100,7 @@ Page({
    */
   onShow: function () {
     let child;
-    if (app.globalData.accountInfo && app.globalData.accountInfo.children) {
+    if (app.globalData.accountInfo && app.globalData.accountInfo.children && app.globalData.accountInfo.children.length > 0) {
       let showNav = app.globalData.accountInfo.children && app.globalData.accountInfo.children.length > 1;
       child = app.globalData.accountInfo.children[0];
       this.setData({

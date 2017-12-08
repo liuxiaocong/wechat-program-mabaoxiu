@@ -50,25 +50,15 @@ Page({
         showNav: showNav,
       })
     }
-    wx.getSystemInfo({
-      success: (res) => {
-        util.log(res);
-        let height = (res.screenWidth - 18) / 3;
-        this.setData({ imageHeight: height + 'px', screenWidth: res.screenWidth, screenHeight: res.screenHeight })
-        this.init();
-      },
-      fail: function (err) {
-
-      }
-    })
   },
 
   init: function () {
     let child;
-    if (app.globalData.accountInfo && app.globalData.accountInfo.children) {
+    if (app.globalData.accountInfo && app.globalData.accountInfo.children && app.globalData.accountInfo.children.length>0) {
       child = app.globalData.accountInfo.children[0];
       this.setData({
-        focusChildId: child.childId
+        focusChildId: child.childId,
+        currentPage: 0
       })
       this.load(child.childId, this.data.currentPage, pageSize, false);
     }
@@ -175,7 +165,17 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    wx.getSystemInfo({
+      success: (res) => {
+        util.log(res);
+        let height = (res.screenWidth - 18) / 3;
+        this.setData({ imageHeight: height + 'px', screenWidth: res.screenWidth, screenHeight: res.screenHeight })
+        this.init();
+      },
+      fail: function (err) {
 
+      }
+    })
   },
 
   /**
