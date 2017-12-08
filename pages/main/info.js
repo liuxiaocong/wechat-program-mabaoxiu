@@ -22,6 +22,17 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    app.userInfoReadyCallback = () => {
+      console.log("userInfoReadyCallback");
+      let userAvatar = '/pages/images/default-avatar.png';
+      if (app.globalData.userInfo) {
+        userAvatar = app.globalData.userInfo.avatarUrl;
+      }
+      this.setData({
+        userAvatar: userAvatar,
+        userName: this.getParentName(),
+      })
+    };
     wx.getSystemInfo({
       success: (res) => {
         util.log(res);
@@ -42,6 +53,7 @@ Page({
     if (app.globalData.accountInfo && app.globalData.accountInfo.children) {
       children = app.globalData.accountInfo.children;
     }
+   
     children.forEach((child) => {
       if (!child.relationType) {
         child.relationType = "未定义"

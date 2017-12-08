@@ -50,7 +50,7 @@ Page({
   init: function () {
     const { accountInfo } = app.globalData
     
-    if (accountInfo && accountInfo.children) {
+    if (accountInfo && accountInfo.children && accountInfo.children.length>0) {
       const { childId } = accountInfo.children[0];
       this.setData({
         focusChildId: childId,
