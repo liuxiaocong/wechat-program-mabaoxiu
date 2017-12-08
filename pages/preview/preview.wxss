@@ -1,0 +1,51 @@
+/* pages/preview/preview.wxss */
+.preview{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: #222;
+    text-align: center;
+    color: #fff;
+}
+
+.preview swiper{
+    width: 100%;
+    height: 100%;
+}
+
+.preview swiper swiper-item{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.index{
+    position: absolute;
+    text-align: center;
+    z-index: 1;
+    width:100%;
+    background:rgba(34,34,34,.3)
+}
+.buttons{
+    position: absolute;
+    display: flex;
+    padding: 0 30rpx;
+    box-sizing: border-box;
+    justify-content: space-between;
+    align-items: center;
+    bottom: 0;
+    width:100%;
+    height: 100rpx;
+    line-height: 100rpx;
+    background:rgba(34,34,34,.3);
+    z-index: 1;
+}
+.buttons .button{
+    width: 60rpx;
+    height: 100%;
+}
+.buttons image{
+    width: 50rpx;
+    height: 50rpx;
+    vertical-align: middle;
+}

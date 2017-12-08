@@ -18,6 +18,7 @@
 
 .image-view-wrap image {
   display: block;
+  width: 100%;
 }
 
 .image-item-list-wrap {

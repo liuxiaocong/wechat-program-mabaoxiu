@@ -1,0 +1,19 @@
+<!--pages/preview/preview.wxml-->
+<view class="preview">
+    <swiper duration="{{300}}" current="{{currentIndex}}" bindchange="onSwiperChange">
+        <view class="index">{{current||currentIndex-0+1}}/{{prePhotos.length}}</view>
+        <block wx:for="{{prePhotos}}" wx:key="{{index}}">
+            <swiper-item bindtap="onClickImg">
+                <image src="{{item.src}}" class="slide-image" mode="widthFix"/>
+            </swiper-item>
+        </block>
+        <view class="buttons">
+            <view class="loved button" bindtap="onLoved" wx-if="{{from!=='info'}}">
+                <image src="{{prePhotos[current? current-1:currentIndex].chosen?'/pages/images/icon-loved.png':'/pages/images/icon-unlove.png'}}"/>
+            </view>
+            <view class="delete button" bindtap="onDelete" wx-if="{{from!=='photoSquare'}}">
+                <image src="/pages/images/icon-delete.png"/>
+            </view>
+        </view>
+    </swiper>
+</view>

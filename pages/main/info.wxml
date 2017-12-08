@@ -8,7 +8,7 @@
     </view>
     <button bindtap="clickEditName" class="set-name-btn" hover-class="set-name-btn-hover">修改昵称</button>
   </view>
-  <view wx:for="{{children}}" wx:for-index="idx" wx:for-item="child" wx:key="*this">
+  <view wx:for="{{children}}" wx:for-index="index" wx:for-item="child" wx:key="*this">
     <view class="baby-base-info-wrap" hover-class="baby-base-info-wrap-hover">
       <image class="baby-avatar" src="{{child.avatarUri?child.avatarUri:defaultAvatar}}" mode='aspectFill' />
       <view class="baby-name-relation-wrap">
@@ -26,6 +26,7 @@
         <view class="baby-templates-item-wrap" wx:for="{{child.templates}}" wx:for-index="idx" wx:for-item="template" wx:key="*this">
           <image 
           data-childid='{{child.childId}}'
+          data-idx='{{index}}'
           data-itemid='{{template.id}}' bindtap='onClickImageItem' 
           class="baby-templates-item" src="{{template.src}}" mode='aspectFill' />
         </view>
@@ -57,13 +58,4 @@
 </scroll-view>
 <view class="sign-wrap">
   <image bindtap="doSign" wx:if="{{showSign}}" class="sign" src="/pages/images/sign.png" mode='aspectFit' />
-</view>
-
-<view wx:if="{{showPhotoPreview}}" bindtap='onTapPreivewLayout' class='image-view-wrap'>
-  <view class='image-view-inner-wrap'>
-    <image class="loading-background image-view-avatar" src="{{currentPhotoPreviewItem.src}}" bindload="onPreviewImageLoad" mode='aspectFit' style='width:{{currentPhotoPreviewItemWidth}};height:{{currentPhotoPreviewItemHeight}}' />
-    <view class='image-action-wrap'>
-      <image class="delete" catchtap='onTapDelete' data-imageid='{{currentPhotoPreviewItem.id}}' src='/pages/images/delete.png' />
-    </view>
-  </view>
 </view>

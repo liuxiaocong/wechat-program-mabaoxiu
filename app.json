@@ -39,7 +39,8 @@
     "example/navbar/navbar",
     "example/tabbar/tabbar",
     "example/searchbar/searchbar",
-    "pages/webview"
+    "pages/webview",
+    "pages/preview/preview"
   ],
   "tabBar": {
     "color": "#666666",

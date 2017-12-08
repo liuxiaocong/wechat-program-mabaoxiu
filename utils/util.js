@@ -1,3 +1,5 @@
+const app = getApp()
+
 const formatTime = date => {
   const year = date.getFullYear()
   const month = date.getMonth() + 1
@@ -236,14 +238,63 @@ const downloadImageToPhotosAlbum = (urls, completeCallback) => {
   }
 }
 
+const insertTimeBlock = (imgList) => {
+  const arr = []
+  let lastDisplayData = null
+  for (let i = 0; i < imgList.length; i++) {
+    let displayDate = getDisplayDate(imgList[i].ctime);
+    imgList[i].displayDate = displayDate;
+    imgList[i].type = 0;
+    if (displayDate !== lastDisplayData) {
+      lastDisplayData = displayDate;
+      let t = new Date(imgList[i].ctime);
+      let year = t.getFullYear();
+      let month = t.getMonth() + 1;
+      if (month < 10) {
+        month = '0' + month;
+      }
+      let date = t.getDate();
+      if (date < 10) {
+        date = '0' + date;
+      }
+      let dataObject = {
+        type: 1, 
+        year: year,
+        month: month,
+        date: displayDate,
+        monthDate: getDisplayMonthDate(imgList[i].ctime),
+        weekday: getDisplayWeekday(imgList[i].ctime)
+      }
+      arr.push(dataObject);
+    }
+    arr.push(imgList[i]);
+  }
+  return arr
+}
+
+const navigate2PreImg = (pureImgs, itemid, from) => {
+  let currentIndex
+  pureImgs.forEach((item, index) => {
+    if(item.id === itemid){
+      return currentIndex = index
+    }
+  })
+  app.globalData.prePhotos = pureImgs
+  wx.navigateTo({
+    url: `/pages/preview/preview?currentIndex=${currentIndex}&from=${from}`
+  })
+}
+
 module.exports = {
-  formatTime: formatTime,
-  log: log,
-  saveImageToPhotosAlbum: saveImageToPhotosAlbum,
-  uploadTemplateToAliyun: uploadTemplateToAliyun,
-  getDisplayDate: getDisplayDate,
-  getDisplayWeekday: getDisplayWeekday,
-  getDisplayMonthDate: getDisplayMonthDate,
-  downloadImageToPhotosAlbum: downloadImageToPhotosAlbum,
-  getYearMonthDisplayDate: getYearMonthDisplayDate
+  formatTime,
+  log,
+  saveImageToPhotosAlbum,
+  uploadTemplateToAliyun,
+  getDisplayDate,
+  getDisplayWeekday,
+  getDisplayMonthDate,
+  downloadImageToPhotosAlbum,
+  getYearMonthDisplayDate,
+  insertTimeBlock,
+  navigate2PreImg
 }

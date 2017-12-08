@@ -10,14 +10,12 @@ Page({
   data: {
     showPhotoPreview: false,
     currentPhotoPreviewItem: {},
-    currentPhotoPreviewItemWidth: '320px',
-    currentPhotoPreviewItemHeight: '240px',
     userAvatar: '/pages/images/default-avatar.png',
     userName: '请设置昵称',
     showSign: true,
     children: [],
     defaultAvatar: "/pages/images/baby-default.jpg",
-    currentPhotoPreviewItemChildId:null
+    currentPhotoPreviewItemChildId: null
   },
 
   /**
@@ -35,14 +33,6 @@ Page({
       }
     })
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
   /**
    * 生命周期函数--监听页面显示
    */
@@ -93,42 +83,6 @@ Page({
       }
     }
   },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  },
-
   clickEditName: function () {
     wx.navigateTo({
       url: '/pages/setName/setName'
@@ -310,162 +264,10 @@ Page({
     })
   },
 
-
-  onTapPreivewLayout: function () {
-    this.setData({
-      showPhotoPreview: false,
-      currentPhotoPreviewItem: {}
-    })
-  },
-
   onClickImageItem: function (e) {
-    let itemid = e.target.dataset.itemid;
-    let childid = e.target.dataset.childid;
-    let child;
-    let item;
-    util.log(itemid);
-    util.log(childid);
-    for (let i = 0; i < this.data.children.length; i++) {
-      if (childid === this.data.children[i].childId) {
-        child = this.data.children[i];
-      }
-    }
-    if (child) {
-      for (let j = 0; j < child.templates.length; j++) {
-        if (itemid === child.templates[j].id) {
-          item = child.templates[j];
-        }
-      }
-    }
-    console.log(item);
-    let maxHeightPWidth = this.data.screenHeight * 2 / 3 / this.data.screenWidth;
-    let targetHeight = 240;
-    let targetWidth = 320;
-    this.setData({
-      showPhotoPreview: true,
-      currentPhotoPreviewItem: item,
-      currentPhotoPreviewItemWidth: targetWidth + 'px',
-      currentPhotoPreviewItemHeight: targetHeight + 'px',
-      currentPhotoPreviewItemChildId: childid
-    })
-  },
-  onPreviewImageLoad: function (e) {
-    util.log("onPreviewImageLoad");
-    util.log(e.detail);
-    let maxHeightPWidth = this.data.screenHeight * 2 / 3 / this.data.screenWidth;
-    let targetHeight = 240;
-    let targetWidth = 320;
-    let heightPWidth = e.detail.height / e.detail.width;
-    if (heightPWidth > maxHeightPWidth) {
-      //height image , cut width;
-      targetHeight = this.data.screenHeight * 2 / 3;
-      targetWidth = targetHeight / heightPWidth;
-    } else {
-      //just showfullWidth;
-      targetWidth = this.data.screenWidth;
-      targetHeight = this.data.screenWidth * heightPWidth;
-    }
-    util.log("targetWidth:" + targetWidth);
-    util.log("targetHeight:" + targetHeight);
-    this.setData({
-      currentPhotoPreviewItemWidth: targetWidth + 'px',
-      currentPhotoPreviewItemHeight: targetHeight + 'px'
-    })
-  },
-
-  deleteTemplate:function(childId,imageId){
-    util.log("deleteTemplate");
-    util.log(childId);
-    util.log(imageId);
-    if (this.data.children && this.data.children.length > 0){
-      for (let i = 0; i < this.data.children.length;i++){
-        if (this.data.children[i].childId === childId){
-          let templates = this.data.children[i].templates;
-          let target = -1;
-          for (let j = 0; j < templates.length;j++){
-            if (templates[j].id === imageId){
-              target = j;
-            }
-          }
-          util.log("target:" + target);
-          if(target>=0){
-            templates.splice(target, 1);
-          }
-          this.setData({
-            children: this.data.children
-          })
-        }
-      }
-    }
-  },
-
-  onTapDelete:function(e){
-    let imageid = e.target.dataset.imageid;
-    let childId = this.data.currentPhotoPreviewItemChildId;
-    util.log(imageid);
-    util.log(childId);
-    let child = {};
-    for (let i = 0; i < this.data.children.length; i++) {
-      if (childId === this.data.children[i].childId) {
-        child = this.data.children[i];
-      }
-    }
-    console.log(child);
-    wx.showModal({
-      title: '删除模版',
-      content: '确定要删除该模版？',
-      success:  (res)=> {
-        if (res.confirm) {
-          wx.showToast({
-            title: '删除中..',
-            icon: 'loading'
-          })
-          let url = api.downgradeTemplateChildPhoto;
-          let data = {
-            id:imageid
-          };
-          util.log(data);
-          wx.request({
-            url: url,
-            method: 'POST',
-            data: data,
-            header: {
-              'content-type': 'application/json',
-              'Authorization': app.globalData.token
-            },
-            success: (res) => {
-              util.log("downgradeTemplateChildPhoto success");
-              wx.hideToast();
-              if (res.statusCode == 200 && res.data.code == 20000) {
-                this.setData({
-                  showPhotoPreview: false,
-                  currentPhotoPreviewItem: {},
-                })
-                this.deleteTemplate(childId,imageid)
-                wx.showToast({
-                  title: '删除成功',
-                  icon: 'success',
-                  duration: 1000
-                })
-              } else {
-                wx.showModal({
-                  title: '删除失败',
-                  content: '请稍后重试',
-                })
-              }
-            },
-            fail: (err) => {
-              wx.hideToast();
-              wx.showModal({
-                title: '删除失败',
-                content: '请稍后重试',
-              })
-            },
-          })
-        } else if (res.cancel) {
-          console.log('用户点击取消')
-        }
-      }
-    })
+    let { itemid, idx} = e.target.dataset
+    const pureImgs = this.data.children[idx].templates
+    
+    util.navigate2PreImg(pureImgs, itemid, 'info')
   }
 })
