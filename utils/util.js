@@ -90,7 +90,10 @@ const uploadTemplateToAliyun = (
             name: 'file',
             formData: data,
             success: function (res) {
-              if (res.statusCode === 200 && res.data.code === 20000) {
+              console.log(res);
+              let resData = JSON.parse(res.data);
+              console.log(resData.code);
+              if (res.statusCode === 200 && resData.code === 20000) {
                 uploadObj.success += 1;
               } else {
                 uploadObj.fail += 1;
