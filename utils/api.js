@@ -1,6 +1,6 @@
 let host = "https://kinder.mabaoxiu.cn";
 let api = {
-  appid: 'wx38e36169ec6ef1e5',
+  appid: 'wxd093560aa0e2271c',
   bindOpenIdToPhoneNum: host + '/api/parent/auth/bindOpenIdToPhoneNum',
   wxLogin: host + '/api/parent/auth/wxLogin',
   sendSmsCaptcha: host + '/api/parent/auth/sendSmsCaptcha',
