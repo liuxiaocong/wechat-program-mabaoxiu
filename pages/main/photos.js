@@ -53,10 +53,13 @@ Page({
     if (accountInfo && accountInfo.children) {
       const { childId } = accountInfo.children[0];
       this.setData({
-        focusChildId: childId
+        focusChildId: childId,
+        currentPage: 0
       })
     }
   },
+
+
 
   load: function (childId, page, size, isLoadMore) {
     util.log("load:" + page + "," + size);
@@ -133,6 +136,38 @@ Page({
   onShow: function () {
     const { focusChildId, currentPage } = this.data
     this.load(focusChildId, 0, pageSize, false)
+    wx.getSystemInfo({
+      success: (res) => {
+        util.log(res);
+        let height = (res.screenWidth - 18) / 3;
+        this.setData({ imageHeight: height + 'px', screenWidth: res.screenWidth, screenHeight: res.screenHeight })
+        this.init();
+      },
+      fail: function (err) {
+
+      }
+    })
+  },
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function () {
+
+  },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function () {
+
   },
 
   /**

@@ -79,7 +79,7 @@ const uploadTemplateToAliyun = (
             'OSSAccessKeyId': aliyunPolicy.accessid,
             'Signature': aliyunPolicy.signature,
             'x:filename': fileName,
-            'x:ctime': (new Date().getTime()),
+            'x:ctime': parseInt((new Date()).getTime() / 1000),
             'x:openId': openId,
             'x:token': token,
             'x:childid': childId
@@ -144,7 +144,7 @@ const genUUID = () => {
 
 
 const getDisplayDate = time => {
-  let t = new Date(time);
+  let t = new Date(time * 1000);
   let year = t.getFullYear();
   let month = t.getMonth() + 1;
   if (month < 10) {
@@ -158,7 +158,7 @@ const getDisplayDate = time => {
 }
 
 const getYearMonthDisplayDate = time => {
-  let t = new Date(time);
+  let t = new Date(time * 1000);
   let year = t.getFullYear();
   let month = t.getMonth() + 1;
   if (month < 10) {
@@ -172,14 +172,14 @@ const getYearMonthDisplayDate = time => {
 }
 
 const getDisplayWeekday = time => {
-  let t = new Date(time);
+  let t = new Date(time * 1000);
   let day = t.getDay();
   let weekdayArray = ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
   return weekdayArray[day];
 }
 
 const getDisplayMonthDate = time => {
-  let t = new Date(time);
+  let t = new Date(time * 1000);
   return t.getDate();
 }
 
@@ -296,5 +296,6 @@ module.exports = {
   downloadImageToPhotosAlbum,
   getYearMonthDisplayDate,
   insertTimeBlock,
-  navigate2PreImg
+  navigate2PreImg,
+  genUUID
 }

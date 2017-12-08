@@ -54,6 +54,18 @@ App({
     return null;
   },
 
+  updateChildAvatarById(cid,avatar) {
+    if (this.globalData.children) {
+      for (let i = 0; i < this.globalData.children.length; i++) {
+        if (this.globalData.children[i].childId === cid) {
+          let child = this.globalData.children[i];
+          child.avatarUri = avatar;
+        }
+      }
+    }
+    return null;
+  },
+
   globalData: {
     userInfo: null,
     accountInfo: null,
@@ -63,6 +75,7 @@ App({
     aliyunPolicy: null,
     children: [],
     isDebug: false,
+    childAvatarPolicy: null
   },
 
   updateChildById(id,obj) {

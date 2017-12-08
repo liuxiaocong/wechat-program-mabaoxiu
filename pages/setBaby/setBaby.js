@@ -35,7 +35,77 @@ Page({
       }
     }
     let currentRelationStr = this.data.relations[typeIndex];
-    this.setData({ childid: childid, relationIndex: typeIndex, currentName: child.name, currentRelation: currentRelationStr })
+    let avatar = child.avatarUri ? child.avatarUri : "/pages/images/baby-default.jpg";
+    this.setData({ childid: childid, relationIndex: typeIndex, currentName: child.name, currentRelation: currentRelationStr, currentAvatar: avatar })
+  },
+
+  onTapEditAvatar: function(){
+    wx.chooseImage({
+      count: 1,
+      success: (res)=> {
+        wx.showToast({
+          title: '上传中...',
+          icon: 'loading',
+          duration: 200000
+        });
+        let path = res.tempFilePaths[0];
+        let fileType = path.substr(path.lastIndexOf('.'));
+        let fileName = this.data.childid + '' + (new Date().getTime()) + fileType;
+        let uuid = util.genUUID();
+        let aliyunPolicy = app.globalData.childAvatarPolicy;
+        let openId = app.globalData.openId;
+        let token = app.globalData.token;
+        let data = {
+          'key': aliyunPolicy.directory + '/' + uuid,
+          'callback': aliyunPolicy.callback,
+          'policy': aliyunPolicy.policy,
+          'OSSAccessKeyId': aliyunPolicy.accessid,
+          'Signature': aliyunPolicy.signature,
+          'x:filename': fileName,
+          'x:ctime': parseInt((new Date()).getTime() / 1000),
+          'x:openId': openId,
+          'x:token': token,
+          'x:childid': this.data.childid
+        };
+        console.log(data);
+        wx.uploadFile({
+          url: aliyunPolicy.host,
+          filePath: path,
+          name: 'file',
+          formData: data,
+          success:  (res)=>{
+            util.log("upload avatar");
+            util.log(res);
+            if (res.statusCode === 200) {
+              wx.hideToast();
+              wx.showToast({
+                title: '上传成功',
+              });
+              let resData = JSON.parse(res.data);
+              let url = resData.data.src;
+              this.setData({
+                currentAvatar:url
+              });
+              app.updateChildAvatarById(this.data.childid, url);
+            } else {
+              wx.showToast({
+                title: '上传失败' + res.statusCode,
+              })
+            }
+          },
+          fail: function (err) {
+            util.log(err);
+            wx.hideToast();
+            wx.showToast({
+              title: JSON.stringify(err),
+            })
+          },
+        })
+      },
+      fail: (err) => {
+        log("choose image fail");
+      }
+    })
   },
 
   /**

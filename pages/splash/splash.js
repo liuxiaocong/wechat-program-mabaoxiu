@@ -132,6 +132,27 @@ Page({
     })
   },
 
+  getChildAvatarPolicy: () => {
+    let url = api.getChildAvatarPolicy;
+    wx.request({
+      url: url,
+      method: 'GET',
+      header: {
+        'content-type': 'application/json',
+        'Authorization': app.globalData.token
+      },
+      success: (res) => {
+        util.log("getChildAvatarPolicy success");
+        util.log(res);
+        app.globalData.childAvatarPolicy = res.data.data;
+      },
+      fail: function (err) {
+        util.log("getChildAvatarPolicy fail");
+        util.log(err);
+      },
+    })
+  },
+
   getAliyunPolicy: ()=> {
     let url = api.getAliyunPolicy;
     wx.request({
@@ -188,6 +209,7 @@ Page({
         if (code === 20000) {
           this.getAccountInfo();
           this.getAliyunPolicy();
+          this.getChildAvatarPolicy();
         } else {
           wx.redirectTo({
             url: '/pages/index/index'
