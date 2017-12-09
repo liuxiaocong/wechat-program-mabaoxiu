@@ -8,7 +8,7 @@
 
   <form bindsubmit="formSubmit" bindreset="formReset">
     <view class="name-input-wrap">
-      <input bindinput='onNameChange' class="name-input" name="name" value="{{currentName}}" placeholder="{{currentName}}" />
+      <input bindinput='onNameChange' disabled='true' class="name-input" name="name" value="{{currentName}}" placeholder="{{currentName}}" />
     </view>
     <view class="realtion-select-wrap">
       <picker class="realtion-select-picker" bindchange="bindRelationChange" value="{{relationIndex}}" range="{{relations}}">

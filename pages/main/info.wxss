@@ -89,7 +89,7 @@
 }
 
 .set-name-btn {
-  display: inline-block;
+  display: none;
   width: 160rpx;
   font-size: 0.7em;
   height: 50rpx;
