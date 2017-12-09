@@ -151,7 +151,7 @@ Page({
           this.refreshAccountInfo();
         }
         wx.showModal({
-          title: '',
+          title: res.title,
           content: res.message,
           showCancel: false
         })

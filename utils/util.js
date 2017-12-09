@@ -56,6 +56,7 @@ const uploadTemplateToAliyun = (
     success: 0,
     fail: 0
   }
+  let title = '';
   wx.chooseImage({
     count: count,
     success: function (res) {
@@ -93,6 +94,9 @@ const uploadTemplateToAliyun = (
               console.log(res);
               let resData = JSON.parse(res.data);
               console.log(resData.code);
+              if(resData.code === 40901){
+                title = '模板冲突';
+              }
               if (res.statusCode === 200 && resData.code === 20000) {
                 uploadObj.success += 1;
               } else {
@@ -107,7 +111,8 @@ const uploadTemplateToAliyun = (
                 wx.hideToast();
                 completeCallback({
                   message: message,
-                  count: uploadObj.success
+                  count: uploadObj.success,
+                  title: title
                 })
               }
             },
@@ -122,7 +127,8 @@ const uploadTemplateToAliyun = (
                 wx.hideToast();
                 completeCallback({
                   message: message,
-                  count: uploadObj.success
+                  count: uploadObj.success,
+                  title: title
                 })
               }
             },
