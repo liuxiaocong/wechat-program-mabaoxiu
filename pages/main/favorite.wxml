@@ -11,7 +11,7 @@
             {{imageItem.displayDate}}
           </view>
           <view class='image-select'>
-            <checkbox-group data-imageid='{{imageItem.id}}' bindchange="bindSelectChange">
+            <checkbox-group wx:if="{{downloadReady}}" data-imageid='{{imageItem.id}}' bindchange="bindSelectChange">
               <label class="image-select-all-label">
                 <view class="image-select-all-text">
                   <checkbox class="weui-agree__checkbox" value="selectAll" checked="{{imageItem.isSelect}}" />
@@ -71,7 +71,7 @@
         </view>
       </label>
     </checkbox-group>
-    <button class='download' catchtap='onTapDownload'>
+    <button wx:if="{{downloadReady}}" class='download' catchtap='onTapDownload'>
       下载
     </button>
   </view>

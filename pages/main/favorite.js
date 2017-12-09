@@ -11,13 +11,14 @@ Page({
   data: {
     currentImageItems: [],
     isSelectAll: false,
-    showNav: false,
+    showNav: true,
     children: [],
     focusChildId: null,
     currentOpenedCommentItemsId: [],
     isEnd: false,
     currentPage: 0,
     currentSelectImageIds: [],
+    downloadReady: true,
   },
 
   /**
@@ -104,7 +105,6 @@ Page({
       let showNav = app.globalData.accountInfo.children && app.globalData.accountInfo.children.length > 1;
       child = app.globalData.accountInfo.children[0];
       this.setData({
-        showNav: showNav,
         children: app.globalData.accountInfo.children,
         focusChildId: child.childId,
         currentPage: 0,
